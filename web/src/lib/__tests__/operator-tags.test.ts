@@ -60,3 +60,15 @@ it("finds an older tag by its full URL after it leaves the recent list", async (
   expect(result?.status).toBe("ACTIVE");
   expect(result?.url).toBe(origin + "/m/" + token);
 });
+
+it.each([
+  { instruction: "Software demo.", instruction_bn: "সফটওয়্যার ডেমো।", catalog_status: "DEMO_READY" as const, ready: true },
+  { instruction: "Software demo.", instruction_bn: null, catalog_status: "DEMO_READY" as const, ready: false },
+  { instruction: "Software demo.", instruction_bn: "সফটওয়্যার ডেমো।", catalog_status: "PACK_CHECK_REQUIRED" as const, ready: false },
+  { instruction: "Software demo.", instruction_bn: " ", catalog_status: "DEMO_READY" as const, ready: false },
+])("recovers activation readiness without treating legacy or blocked records as ready: $ready", async ({ ready, ...fields }) => {
+  const result = await findOperatorTag("abcdefghijklmnopqrstuv", "https://medot.example", async () => ({
+    token: "abcdefghijklmnopqrstuv", status: "PENDING", generic_name: "Paracetamol", strength: "500 mg", dosage_form: "Tablet", batch_number: "DEMO-ONLY", expiry_month: "2028-12", ...fields,
+  }));
+  expect(result?.activationReady).toBe(ready);
+});

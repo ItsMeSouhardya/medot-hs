@@ -73,11 +73,24 @@ it("denies a foreign origin even for an allowed Clerk user", async () => {
 it("allows the verified pharmacy user to reach catalog and lifecycle services", async () => {
   vi.mocked(getPharmacyAccess).mockResolvedValue({ kind: "authorized", userId: "user_team_one" });
   expect((await listMedicines()).status).toBe(200);
-  expect((await activateTagRoute(request("/api/admin/tags/" + token + "/activate"), context)).status).toBe(409);
+  expect((await activateTagRoute(request("/api/admin/tags/" + token + "/activate", "https://medot.example", undefined, '{"verified":true}'), context)).status).toBe(409);
   expect((await revokeTagRoute(request("/api/admin/tags/" + token + "/revoke"), context)).status).toBe(409);
   expect(getSql).toHaveBeenCalledOnce();
   expect(activateTag).toHaveBeenCalledWith(token, expect.anything());
   expect(revokeTag).toHaveBeenCalledWith(token, expect.anything());
+});
+it.each(['{}', '{"verified":false}', '{"verified":"true"}', 'null', 'not-json'])("rejects activation without explicit readback confirmation: %s", async (body) => {
+  vi.mocked(getPharmacyAccess).mockResolvedValue({ kind: "authorized", userId: "user_team_one" });
+  const response = await activateTagRoute(request("/api/admin/tags/" + token + "/activate", "https://medot.example", undefined, body), context);
+  expect(response.status).toBe(400);
+  expect(activateTag).not.toHaveBeenCalled();
+});
+it("activates only the verified pending token and returns a conflict on a race", async () => {
+  vi.mocked(getPharmacyAccess).mockResolvedValue({ kind: "authorized", userId: "user_team_one" });
+  vi.mocked(activateTag).mockResolvedValueOnce(true).mockResolvedValueOnce(false);
+  const invoke = () => activateTagRoute(request("/api/admin/tags/" + token + "/activate", "https://medot.example", undefined, '{"verified":true}'), context);
+  expect((await invoke()).status).toBe(200);
+  expect((await invoke()).status).toBe(409);
 });
 it("authorized provisioning retains the exact canonical token URL", async () => {
   vi.mocked(getPharmacyAccess).mockResolvedValue({ kind: "authorized", userId: "user_team_one" });

@@ -9,6 +9,14 @@ export async function POST(request: Request, { params }: Context) {
   const denied = pharmacyAccessDenied(await getPharmacyAccess());
   if (denied) return denied;
   if (!hasSameOrigin(request)) return new Response("Invalid origin", { status: 403 });
+  try {
+    const body: unknown = await request.json();
+    if (typeof body !== "object" || body === null || !("verified" in body) || body.verified !== true) {
+      return Response.json({ error: "READBACK_REQUIRED" }, { status: 400 });
+    }
+  } catch {
+    return Response.json({ error: "READBACK_REQUIRED" }, { status: 400 });
+  }
   const { token } = await params;
   try {
     const changed = await activateTag(token, lifecycleRepository);

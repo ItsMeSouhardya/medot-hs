@@ -15,6 +15,7 @@ export type OperatorTagRow = {
   instruction_bn?: string | null;
   instruction_hi?: string | null;
   created_by?: string | null;
+  catalog_status?: "DEMO_READY" | "PACK_CHECK_REQUIRED";
 };
 
 export type OperatorTag = {
@@ -31,6 +32,7 @@ export type OperatorTag = {
   instructionBn?: string;
   instructionHi?: string;
   createdBy?: string;
+  activationReady: boolean;
 };
 
 type RecentTagQuery = () => Promise<OperatorTagRow[]>;
@@ -46,6 +48,9 @@ function mapTag(row: OperatorTagRow, origin: string): OperatorTag {
     batchNumber: row.batch_number,
     expiryMonth: row.expiry_month,
     url: buildTagUrl(row.token, origin),
+    activationReady: row.catalog_status === "DEMO_READY" && Boolean(row.instruction?.trim()) && Boolean(row.instruction_bn?.trim()) &&
+      (row.instruction?.trim().length ?? 0) <= 500 && (row.instruction_bn?.trim().length ?? 0) <= 500 &&
+      (row.instruction_hi == null || (row.instruction_hi.trim().length > 0 && row.instruction_hi.trim().length <= 500)),
     ...(row.brand_name ? { brandName: row.brand_name } : {}),
     ...(row.instruction ? { instruction: row.instruction } : {}),
     ...(row.instruction_bn?.trim() ? { instructionBn: row.instruction_bn } : {}),
@@ -59,7 +64,7 @@ async function queryRecentTags(): Promise<OperatorTagRow[]> {
   const rows = await sql`
     SELECT t.token, t.status, m.generic_name, m.strength, m.dosage_form,
            t.batch_number, t.expiry_month, m.brand_name,
-           t.instruction, t.instruction_bn, t.instruction_hi, t.created_by
+           t.instruction, t.instruction_bn, t.instruction_hi, t.created_by, m.catalog_status
     FROM tags AS t
     JOIN medicines AS m ON m.id = t.medicine_id
     ORDER BY t.created_at DESC
@@ -73,7 +78,7 @@ async function queryOneTag(token: string): Promise<OperatorTagRow | null> {
   const rows = await sql`
     SELECT t.token, t.status, m.generic_name, m.strength, m.dosage_form,
            t.batch_number, t.expiry_month, m.brand_name,
-           t.instruction, t.instruction_bn, t.instruction_hi, t.created_by
+           t.instruction, t.instruction_bn, t.instruction_hi, t.created_by, m.catalog_status
     FROM tags AS t
     JOIN medicines AS m ON m.id = t.medicine_id
     WHERE t.token = ${token}
@@ -111,4 +116,16 @@ export async function listOperatorTags(
 ): Promise<OperatorTag[]> {
   const rows = await query();
   return rows.map((row) => mapTag(row, origin));
+}
+
+export type OperatorCounts = { pending: number; active: number; revoked: number };
+export async function getOperatorCounts(): Promise<OperatorCounts> {
+  const sql = getSql();
+  const [row] = await sql`
+    SELECT count(*) FILTER (WHERE status = 'PENDING')::int AS pending,
+           count(*) FILTER (WHERE status = 'ACTIVE')::int AS active,
+           count(*) FILTER (WHERE status = 'REVOKED')::int AS revoked
+    FROM tags
+  `;
+  return row as OperatorCounts;
 }

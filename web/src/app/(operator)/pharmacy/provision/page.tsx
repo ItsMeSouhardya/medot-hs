@@ -29,8 +29,7 @@ export default async function NewTagPage() {
 
   return (
     <main className="operator-page">
-      <h1>Provision a MEDOT tag</h1>
-      <p>For controlled prototype testing with sample strips only.</p>
+      <header className="operator-heading"><div><p className="eyebrow">Prepare a new record</p><h1>Provision a MEDOT tag</h1><p>One sample strip, one clip. Review the printed details before writing.</p></div></header>
       <ProvisionForm medicines={medicines} />
     </main>
   );

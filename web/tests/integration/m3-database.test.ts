@@ -4,7 +4,7 @@ import { getSql } from "@/lib/db";
 import { generateToken } from "@/lib/domain";
 import { createPendingTag } from "@/lib/provision";
 import { lifecycleRepository, provisionRepository, resolveTag } from "@/lib/tag-repository";
-import { findOperatorTag } from "@/lib/operator-tags";
+import { findOperatorTag, getOperatorCounts } from "@/lib/operator-tags";
 import { medicineCatalog } from "@/lib/medicine-catalog";
 
 // Opt in against the authorized demo database only. Never run on each test/build.
@@ -81,5 +81,14 @@ describe.skipIf(process.env.MEDOT_RUN_DB_TESTS !== "1")("M3 real Neon persistenc
     const sql = getSql();
     expect(await sql`SELECT token, language, content_hash, audio_base64, created_at FROM tag_audio LIMIT 0`).toEqual([]);
     expect(await sql`SELECT day, generation_count FROM speech_budget LIMIT 0`).toEqual([]);
+  }, 30000);
+
+  it("shows real totals and recovers a saved pending record without activating it", async () => {
+    const before = await getOperatorCounts();
+    const token = generateToken(); created.add(token);
+    await provisionRepository.insertPending({ ...input, token, status: "PENDING", createdBy: "m3-integration-only" });
+    expect(await getOperatorCounts()).toEqual({ ...before, pending: before.pending + 1 });
+    const recovered = await findOperatorTag(token, "https://medot.example");
+    expect(recovered).toMatchObject({ status: "PENDING", url: "https://medot.example/m/" + token, activationReady: true });
   }, 30000);
 });

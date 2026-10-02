@@ -36,7 +36,7 @@ npm --prefix .\web run build
 
 `typecheck` generates Next route types before TypeScript, so it works before the first production build. Run `npm --prefix .\web start` for the production server. Production mutations require an HTTPS `APP_ORIGIN`; use the development server for local HTTP provisioning. The [root Render blueprint](../render.yaml) configures hosting; follow the [Render runbook](../docs/RENDER_RUNBOOK.md). Publishable Clerk key changes require a rebuild.
 
-The normal test suite skips six database integration cases. Run them only against the configured disposable demo database after setup:
+The normal test suite skips seven database integration cases. Run them only against the configured disposable demo database after setup:
 
 ```powershell
 Push-Location .\web
@@ -50,3 +50,9 @@ try { npx vitest run tests/integration/m3-database.test.ts } finally {
 These tests insert temporary software-only pending records and delete only their own pending fixtures. They never activate a tag or call a voice provider. Real authenticated sessions, hosted behavior and physical readback require separate checks.
 
 Keep `APP_ORIGIN` at the final stable HTTPS origin before writing physical tags. QR and NFC use the exact same returned URL. The inherited pending -> independent readback -> activate flow is preserved.
+
+M5 pharmacy flow: search/select a ready fictional label, enter actual printed batch/expiry and reviewed instructions, review every field, then check the physical-confirmation box. Creation saves a pending record before writing. Copy/write its exact URL, independently retap and compare the token ending, scan the QR for the same URL, then attest readback and activate. `POST /api/admin/tags/[token]/activate` now requires JSON `{ "verified": true }`; missing/false/nonboolean confirmation returns 400, state/readiness conflicts return 409. Every mutation still checks the Clerk allowlist and origin first.
+
+Recent tags show the latest 50 rows; full URL/token search finds older records and displays saved language variants. Incomplete legacy pending records cannot activate; replace them with reviewed new tokens. Conflicts and network uncertainty offer a fresh saved-state request. Check Recent tags before repeating a creation whose response was lost. Revocation is terminal and asks for confirmation; corrections issue a new token.
+
+Drafts stay only in component memory. After a 401, sign in in a new tab and return to retry; reloading or closing the draft tab discards unsaved fields. All supplied prescription presets are still drafts and disabled. After human review, explicitly mark the correct fixture `REVIEWED` and use only a verified ready catalog identity; never generate or translate instructions automatically. English edits clear translated fields for renewed review. Pharmacy styling is scoped; shared logo and bundled fonts remain M6.

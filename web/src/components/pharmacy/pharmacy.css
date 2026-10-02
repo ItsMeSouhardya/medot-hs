@@ -1,0 +1,107 @@
+.pharmacy-shell { --op-bg:#f6f7f2; --op-ink:#172f2b; --op-primary:#215c50; --op-muted:#526860; display:grid; grid-template-columns:240px minmax(0,1fr); min-height:100vh; color:var(--op-ink); background:var(--op-bg); font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif; font-size:17px; }
+.pharmacy-shell :lang(bn) { font-family:"Noto Sans Bengali","Nirmala UI",sans-serif; line-height:1.8; }
+.pharmacy-shell :lang(hi) { font-family:"Noto Sans Devanagari","Nirmala UI",sans-serif; line-height:1.8; }
+.pharmacy-shell a { color:var(--op-primary); }
+.pharmacy-shell :focus-visible { outline:3px solid #86530e; outline-offset:4px; }
+.pharmacy-shell button,.pharmacy-shell .button-link { background:var(--op-primary); color:#fff; border:2px solid var(--op-primary); border-radius:12px; min-height:48px; font-size:16px; font-weight:650; margin:0; padding:12px 18px; }
+.pharmacy-shell button:hover,.pharmacy-shell .button-link:hover { background:#173f37; }
+.pharmacy-shell .secondary-button { color:var(--op-primary); background:#fff; }
+.pharmacy-shell .secondary-button:hover { background:#edf4ef; color:var(--op-ink); }
+.pharmacy-shell .danger-button { background:#9c2f36; border-color:#9c2f36; }
+.pharmacy-shell button:disabled { opacity:.55; }
+.operator-sidebar { position:sticky; top:0; align-self:start; height:100vh; display:flex; flex-direction:column; gap:32px; padding:36px 24px; background:#fff; border-right:1px solid #c8d6ce; }
+.operator-wordmark { text-decoration:none; font-size:26px; letter-spacing:.1em; font-weight:750; }
+.operator-wordmark span { display:block; letter-spacing:0; font-size:12px; color:var(--op-muted); font-weight:500; margin-top:8px; }
+.operator-navigation { display:grid; gap:8px; }
+.operator-navigation a { display:flex; align-items:center; gap:12px; min-height:48px; padding:12px; border-radius:12px; text-decoration:none; font-size:15px; font-weight:600; }
+.operator-navigation a[aria-current=page] { background:#ddede5; color:#172f2b; }
+.operator-navigation a:hover { background:#eef4ef; }
+.operator-navigation svg { flex-shrink:0; }
+.operator-session { margin-top:auto; padding-top:20px; border-top:1px solid #c8d6ce; font-size:13px; }
+.operator-session p,.sidebar-note { color:var(--op-muted); }
+.operator-session button { width:100%; background:#fff; color:var(--op-primary); }
+.sidebar-note { font-size:12px; margin:0; line-height:1.7; }
+.operator-content { min-width:0; }
+.pharmacy-shell .operator-page { width:min(100% - 64px,1120px); padding:40px 0 16px; }
+.operator-heading { display:flex; gap:24px; justify-content:space-between; align-items:center; margin-bottom:32px; }
+.operator-heading h1 { font-size:clamp(28px,3vw,40px); letter-spacing:-.035em; margin:8px 0 16px; }
+.operator-heading p { max-width:620px; color:var(--op-muted); }
+.operator-heading .button-link { flex-shrink:0; }
+.pharmacy-shell .eyebrow { color:var(--op-primary); font-size:11px; font-weight:750; letter-spacing:.12em; margin:0 0 8px; }
+.operator-stats { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:16px; }
+.stat-card { background:#fff; border:1px solid #c8d6ce; border-radius:20px; padding:24px; }
+.stat-card p { margin:0; font-size:14px; font-weight:650; }
+.stat-card strong { display:block; font-size:44px; letter-spacing:-.04em; margin:12px 0; }
+.stat-card span { display:block; color:var(--op-muted); font-size:12px; line-height:1.6; }
+.stat-pending { background:#e9f2ec; }
+.operator-card { background:#fff; border:1px solid #c8d6ce; border-radius:20px; padding:28px; margin-top:24px; box-shadow:0 3px 12px #172f2b04; min-width:0; }
+.operator-card h2 { margin-top:0; font-size:24px; letter-spacing:-.02em; }
+.operator-card h3 { font-size:17px; margin:24px 0 8px; }
+.section-heading { display:flex; justify-content:space-between; align-items:center; gap:16px; margin-bottom:16px; }
+.section-heading a { font-size:14px; }
+.operator-note,.demo-notice { background:#edf4ef; border:1px solid #c8d6ce; border-radius:14px; padding:20px; margin-top:24px; }
+.operator-note p { font-size:14px; color:var(--op-muted); margin:8px 0 0; }
+.demo-notice { font-size:11px; font-weight:750; letter-spacing:.07em; padding:12px 16px; }
+.operator-alert { background:#fdecec; color:#74242a; border:1px solid #9c2f36; border-radius:12px; padding:16px; margin:20px 0; }
+.operator-alert p { margin:0 0 8px; }
+.pharmacy-shell .operator-alert a { color:#74242a; }
+.tag-table { border-collapse:collapse; width:100%; font-size:14px; }
+.tag-table th { padding:12px 8px; text-align:left; color:var(--op-muted); font-size:11px; font-weight:650; text-transform:uppercase; letter-spacing:.06em; border-bottom:1px solid #c8d6ce; }
+.tag-table td { padding:20px 8px; border-bottom:1px solid #e6ece7; vertical-align:middle; }
+.tag-table tbody tr:last-child td { border-bottom:0; }
+.tag-table td:first-child span { display:block; color:var(--op-muted); font-size:12px; margin-top:5px; }
+.pharmacy-shell .status-pill { display:inline-flex; align-items:center; padding:6px 10px; border-radius:8px; font-size:10px; font-weight:750; letter-spacing:.07em; width:fit-content; }
+.pharmacy-shell .status-pending { background:#fff1d8; color:#76501b; }
+.pharmacy-shell .status-active { background:#ddede5; color:#215c50; }
+.pharmacy-shell .status-revoked { background:#fdecec; color:#9c2f36; }
+.table-action { display:inline-flex; align-items:center; min-height:48px; font-weight:650; }
+.empty-state { padding:32px 8px; color:var(--op-muted); }
+.provision-progress { display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); list-style:none; padding:0; gap:12px; margin:0 0 20px; }
+.provision-progress li { display:flex; align-items:center; gap:8px; color:var(--op-muted); font-size:11px; line-height:1.5; }
+.step-number { display:grid; place-items:center; width:28px; height:28px; flex-shrink:0; border:1px solid #526860; border-radius:50%; font-weight:700; }
+.provision-progress [aria-current=step] { color:var(--op-primary); font-weight:750; }
+.provision-progress [aria-current=step] .step-number { background:var(--op-primary); color:#fff; border-color:var(--op-primary); }
+.provision-progress .is-complete .step-number { background:#ddede5; }
+.provision-form fieldset { border:0; border-bottom:1px solid #c8d6ce; margin:0 0 28px; padding:0 0 28px; min-width:0; }
+.provision-form legend { font-weight:650; font-size:20px; padding:0; margin-bottom:8px; }
+.provision-form legend .eyebrow { display:block; }
+.pharmacy-shell label { font-size:14px; margin-top:20px; }
+.pharmacy-shell input:not([type=checkbox]),.pharmacy-shell select,.pharmacy-shell textarea { border:1px solid #526860; border-radius:12px; padding:12px; font-size:16px; color:var(--op-ink); max-width:100%; }
+.pharmacy-shell textarea { min-height:120px; resize:vertical; }
+.pharmacy-shell .small-note { font-size:12px; line-height:1.6; color:var(--op-muted); }
+.field-pair { display:grid; grid-template-columns:1fr 1fr; gap:20px; }
+.action-row { display:flex; flex-wrap:wrap; gap:12px; margin-top:20px; }
+.confirmation-check { display:flex; align-items:flex-start; gap:12px; padding:16px; border:1px solid #526860; border-radius:12px; line-height:1.6; background:#f6f7f2; }
+.confirmation-check input { flex:0 0 auto; margin:1px 0 0; accent-color:#215c50; }
+.review-details { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:16px; }
+.review-details>div { border:0; background:#f6f7f2; padding:16px; border-radius:12px; overflow-wrap:anywhere; }
+.review-details dt { font-size:12px; color:var(--op-muted); }
+.review-details dd { font-size:16px; }
+.instruction-review { margin:24px 0; border-left:3px solid #215c50; padding:0 20px; }
+.instruction-review p,.saved-instructions p { white-space:pre-wrap; overflow-wrap:anywhere; }
+.pending-grid { display:grid; grid-template-columns:minmax(220px,.7fr) minmax(0,1.3fr); gap:28px; align-items:start; }
+.writer-panel { margin-top:0; min-width:0; }
+.writer-panel h2 { font-size:20px; }
+.writer-panel p,.writer-panel li { font-size:14px; }
+.writer-help,.saved-instructions { border:1px solid #c8d6ce; border-radius:12px; padding:16px; margin:20px 0; }
+.pharmacy-shell summary { cursor:pointer; font-size:14px; font-weight:650; min-height:30px; padding:4px; }
+.readback-panel { background:#edf4ef; padding:20px; border-radius:16px; margin-top:24px; }
+.readback-panel h3 { margin-top:0; }
+.revoke-panel { margin-top:24px; padding-top:20px; border-top:1px solid #c8d6ce; }
+.token-ending { display:inline-block; font-family:ui-monospace,monospace; letter-spacing:.08em; }
+.pharmacy-shell .url { background:#f6f7f2; border:1px solid #c8d6ce; border-radius:12px; font-size:13px; }
+.qr-panel { text-align:center; }
+.medot-print-label { margin:0; padding:12px; border:1px solid #c8d6ce; border-radius:16px; background:#fff; }
+.medot-print-label img { width:min(100%,280px); height:auto; }
+.medot-print-label figcaption { font-size:12px; overflow-wrap:anywhere; }
+.print-url { display:block; font-family:ui-monospace,monospace; margin:12px 0 0; font-size:10px; }
+.qr-actions { display:grid; gap:12px; margin-top:16px; }
+.search-row { display:flex; align-items:center; gap:12px; }
+.search-row input { flex:1; min-width:0; }
+.search-row button { flex-shrink:0; margin-top:6px; }
+.operator-footer { width:min(100% - 64px,1120px); margin:24px auto 0; padding:24px 0; border-top:1px solid #c8d6ce; font-size:11px; color:var(--op-muted); }
+.operator-skip-link,.pharmacy-shell .sr-only { position:absolute; width:1px; height:1px; overflow:hidden; clip-path:inset(50%); }
+.operator-skip-link:focus { z-index:10; width:auto; height:auto; clip-path:none; padding:16px; background:#fff; top:8px; left:8px; }
+@media(max-width:1000px) { .pharmacy-shell { grid-template-columns:200px minmax(0,1fr); } .operator-sidebar { padding:28px 16px; } .pending-grid { grid-template-columns:1fr; } .qr-panel { max-width:320px; } .operator-heading { align-items:flex-start; flex-direction:column; } .provision-progress { gap:8px; } .provision-progress li { flex-direction:column; align-items:flex-start; } }
+@media(max-width:760px) { .pharmacy-shell { display:block; } .operator-sidebar { position:static; height:auto; padding:20px; gap:20px; border-right:0; border-bottom:1px solid #c8d6ce; } .operator-wordmark span { display:inline; margin-left:16px; } .operator-navigation { display:flex; gap:8px; flex-wrap:wrap; } .operator-navigation a { padding:10px 12px; font-size:12px; } .operator-session { margin:0; padding:0; border:0; display:flex; align-items:center; justify-content:space-between; gap:16px; } .operator-session button { width:auto; } .sidebar-note { display:none; } .pharmacy-shell .operator-page,.operator-footer { width:calc(100% - 40px); } .pharmacy-shell .operator-page { padding-top:28px; } .operator-card { padding:20px; } .operator-stats { grid-template-columns:1fr; gap:12px; } .stat-card { display:grid; grid-template-columns:1fr auto; align-items:center; padding:20px; } .stat-card strong { grid-column:2; grid-row:1 / 3; margin:0 0 0 12px; font-size:36px; } .stat-card span { grid-column:1; margin-top:8px; } .section-heading { align-items:flex-start; flex-direction:column; } .field-pair,.review-details { grid-template-columns:1fr; } .provision-progress { grid-template-columns:repeat(5,minmax(0,1fr)); gap:5px; } .provision-progress li { font-size:9px; overflow-wrap:anywhere; } .step-number { width:24px; height:24px; } .tag-table thead { display:none; } .tag-table,.tag-table tbody,.tag-table tr,.tag-table td { display:block; width:100%; } .tag-table tr { padding:16px 0; border-bottom:1px solid #c8d6ce; } .tag-table td { border:0; padding:4px 0; } .tag-table td[data-label="Token ending"]::before { content:"Token ending: "; font-size:12px; color:var(--op-muted); } .search-row { flex-direction:column; align-items:stretch; } .action-row>* { flex:1 1 200px; } .operator-wordmark { font-size:22px; } }
+@media print { body:has(.medot-print-label) * { visibility:hidden; } body:has(.medot-print-label) .medot-print-label,body:has(.medot-print-label) .medot-print-label * { visibility:visible; } body:has(.medot-print-label) .medot-print-label { position:absolute; left:16px; top:16px; width:300px; border:0; box-shadow:none; } }
