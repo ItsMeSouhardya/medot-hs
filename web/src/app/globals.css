@@ -1,0 +1,76 @@
+:root {
+  color-scheme: light;
+  font-family: Arial, Helvetica, sans-serif;
+  color: #17202a;
+  background: #fff;
+}
+
+* { box-sizing: border-box; }
+
+html { font-size: 18px; }
+
+body { margin: 0; }
+
+main {
+  width: min(100% - 2rem, 44rem);
+  margin: 0 auto;
+  padding: 2rem 0 4rem;
+}
+
+h1 { font-size: clamp(2rem, 6vw, 3rem); line-height: 1.16; margin: .5rem 0 1.25rem; }
+h2 { font-size: 1.5rem; line-height: 1.25; margin: 2rem 0 .75rem; }
+p, li, dd { line-height: 1.5; }
+p { margin: .75rem 0; }
+
+a { color: #064c9b; }
+a:hover { text-decoration-thickness: .15em; }
+:focus-visible { outline: 3px solid #a34100; outline-offset: 3px; }
+
+button, input, select, textarea { font: inherit; }
+button, .button-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 3rem;
+  padding: .65rem 1rem;
+  margin: .5rem .5rem .5rem 0;
+  border: 2px solid #064c9b;
+  border-radius: .35rem;
+  background: #064c9b;
+  color: white;
+  font-weight: 700;
+  cursor: pointer;
+  text-decoration: none;
+}
+button:hover, .button-link:hover { background: #05356a; color: white; }
+button:disabled { opacity: .55; cursor: not-allowed; }
+
+label { display: block; font-weight: 700; margin-top: 1rem; }
+input:not([type="checkbox"]), select, textarea {
+  display: block;
+  width: 100%;
+  min-height: 3rem;
+  padding: .55rem;
+  margin-top: .35rem;
+  border: 2px solid #526070;
+  border-radius: .3rem;
+  background: white;
+  color: #17202a;
+}
+textarea { min-height: 6rem; }
+input[type="checkbox"] { width: 1.4rem; height: 1.4rem; vertical-align: middle; margin-right: .45rem; }
+
+.eyebrow { font-size: .9rem; font-weight: 800; letter-spacing: .07em; text-transform: uppercase; color: #334155; }
+.strength { font-size: 1.4rem; font-weight: 700; }
+.warning { border: 3px solid #a52a1a; background: #fff1ee; padding: 1rem; font-weight: 700; }
+.small-note { font-size: .9rem; color: #334155; }
+.url { overflow-wrap: anywhere; font-family: monospace; background: #f2f5f8; padding: .75rem; }
+
+dl { margin-top: 1.5rem; }
+dl > div { border-top: 1px solid #bdc7d2; padding: 1rem 0; }
+dt { font-weight: 700; }
+dd { margin: .3rem 0 0; }
+
+section { margin-top: 1.5rem; }
+ol { padding-left: 1.5rem; }
+.tag-card { border: 2px solid #bdc7d2; border-radius: .4rem; padding: 1rem; margin-top: 2rem; }

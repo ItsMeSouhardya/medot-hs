@@ -1,0 +1,27 @@
+# Local dependencies, generated files and execution scratch
+node_modules/
+.next/
+out/
+build/
+coverage/
+*.tsbuildinfo
+next-env.d.ts
+*.log
+/.superpowers/
+/.kilo/
+playwright-report/
+test-results/
+
+# Environment credentials; examples contain names only
+.env*
+!.env.example
+*.pem
+.vercel/
+.DS_Store
+Thumbs.db
+Desktop.ini
+*.swp
+*.swo
+
+# Preserve the existing nested clone without committing it as a submodule
+/medot-hs/
