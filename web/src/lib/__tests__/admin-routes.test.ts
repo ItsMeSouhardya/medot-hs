@@ -81,13 +81,13 @@ it("allows the verified pharmacy user to reach catalog and lifecycle services", 
 });
 it("authorized provisioning retains the exact canonical token URL", async () => {
   vi.mocked(getPharmacyAccess).mockResolvedValue({ kind: "authorized", userId: "user_team_one" });
-  const input = { medicineId: "paracetamol-500", batchNumber: "DEMO-FIXTURE", expiryMonth: "2028-12", instruction: "Demo only. No treatment instruction." };
+  const input = { medicineId: "paracetamol-500", batchNumber: "DEMO-FIXTURE", expiryMonth: "2028-12", instruction: "Demo only. No treatment instruction.", instructionBn: "শুধুমাত্র ডেমো। চিকিৎসার নির্দেশনা নয়।", createdBy: "client-forgery" };
   const result = { token, url: "https://medot.example/m/" + token };
   vi.mocked(createPendingTag).mockResolvedValue(result);
   const response = await createTag(request("/api/admin/tags", "https://medot.example", undefined, JSON.stringify(input)));
   expect(response.status).toBe(201);
   expect(await response.json()).toEqual(result);
-  expect(createPendingTag).toHaveBeenCalledWith(input, expect.anything(), "https://medot.example");
+  expect(createPendingTag).toHaveBeenCalledWith(input, expect.anything(), "https://medot.example", "user_team_one");
 });
 it("disables obsolete password login even with correct old credentials", async () => {
   const response = await oldLogin();

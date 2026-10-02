@@ -8,6 +8,7 @@ import {
 export type PendingTag = ProvisionInput & {
   token: string;
   status: "PENDING";
+  createdBy?: string;
 };
 
 export type ProvisionRepository = {
@@ -30,6 +31,7 @@ export async function createPendingTag(
   rawInput: unknown,
   repository: ProvisionRepository,
   origin: string,
+  createdBy?: string,
 ): Promise<{ token: string; url: string }> {
   const parsed = provisionInputSchema.safeParse(rawInput);
   if (!parsed.success) throw new ProvisionError("INVALID_INPUT");
@@ -42,7 +44,7 @@ export async function createPendingTag(
     const token = generateToken();
     const url = buildTagUrl(token, origin);
     try {
-      await repository.insertPending({ ...input, token, status: "PENDING" });
+      await repository.insertPending({ ...input, token, status: "PENDING", ...(createdBy ? { createdBy } : {}) });
       return { token, url };
     } catch (error) {
       if (!isTokenCollision(error) || attempt === 1) throw error;

@@ -9,6 +9,8 @@ export const provisionInputSchema = z.object({
   batchNumber: z.string().trim().min(1).max(64),
   expiryMonth: z.string().regex(expiryMonthPattern),
   instruction: z.string().trim().min(1).max(500),
+  instructionBn: z.string().trim().min(1).max(500),
+  instructionHi: z.string().trim().min(1).max(500).optional(),
 });
 
 export type ProvisionInput = z.infer<typeof provisionInputSchema>;

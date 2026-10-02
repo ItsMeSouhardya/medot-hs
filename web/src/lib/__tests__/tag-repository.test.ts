@@ -43,3 +43,18 @@ describe("public tag resolution", () => {
     });
   });
 });
+
+it("maps stored language variants and brand but keeps creator private", async () => {
+  const result = await resolveTag(token, async () => ({ ...row, brand_name: "Demo brand", instruction_bn: "ডেমো নির্দেশনা", instruction_hi: "डेमो निर्देश", created_by: "private-user" }));
+  expect(result).toMatchObject({ kind: "active", record: { brandName: "Demo brand", instructionBn: "ডেমো নির্দেশনা", instructionHi: "डेमो निर्देश" } });
+  expect(JSON.stringify(result)).not.toContain("private-user");
+});
+
+it("keeps an active legacy English-only record readable after nullable migration", async () => {
+  const result = await resolveTag(token, async () => ({ ...row, brand_name: null, instruction_bn: null, instruction_hi: null }));
+  expect(result).toMatchObject({ kind: "active", record: { instruction: row.instruction } });
+  if (result.kind === "active") {
+    expect(result.record.instructionBn).toBeUndefined();
+    expect(result.record.instructionHi).toBeUndefined();
+  }
+});

@@ -40,6 +40,7 @@ describe("labelled expiry", () => {
       batchNumber: "DEMO-A1",
       expiryMonth: "2028-02",
       instruction: "Sample instruction",
+      instructionBn: "ডেমো নির্দেশনা",
     };
     expect(provisionInputSchema.safeParse(base).success).toBe(true);
     expect(provisionInputSchema.safeParse({ ...base, expiryMonth: "2026-13" }).success)
@@ -48,5 +49,28 @@ describe("labelled expiry", () => {
       .toBe(false);
     expect(provisionInputSchema.safeParse({ ...base, instruction: "  " }).success)
       .toBe(false);
+  });
+});
+
+describe("multilingual provision instructions", () => {
+  const base = { medicineId: "paracetamol-500", batchNumber: "DEMO-ONLY", expiryMonth: "2028-12", instruction: " Demo instruction ", instructionBn: " ডেমো নির্দেশনা " };
+  it("requires English and Bengali, trims each, and keeps Hindi optional", () => {
+    expect(provisionInputSchema.parse(base)).toMatchObject({ instruction: "Demo instruction", instructionBn: "ডেমো নির্দেশনা" });
+    expect(provisionInputSchema.parse({ ...base, instructionHi: " डेमो निर्देश " })).toMatchObject({ instructionHi: "डेमो निर्देश" });
+    const withoutBengali: Partial<typeof base> = { ...base };
+    delete withoutBengali.instructionBn;
+    expect(provisionInputSchema.safeParse(withoutBengali).success).toBe(false);
+  });
+  it("rejects blank or oversized variants", () => {
+    for (const field of ["instruction", "instructionBn", "instructionHi"]) {
+      for (const value of [" ", "x".repeat(501)]) {
+        expect(provisionInputSchema.safeParse({ ...base, [field]: value }).success).toBe(false);
+      }
+      expect(provisionInputSchema.safeParse({ ...base, [field]: "x".repeat(500) }).success).toBe(true);
+    }
+  });
+  it("preserves the event-month expiry boundary in Asia/Kolkata", () => {
+    expect(expiryState("2026-10", new Date("2026-10-31T18:29:59Z"))).toBe("CURRENT");
+    expect(expiryState("2026-10", new Date("2026-10-31T18:30:00Z"))).toBe("EXPIRED");
   });
 });

@@ -30,6 +30,14 @@ it("recovers pending and active tag URLs from stored records", async () => {
   expect(tags[0].batchNumber).toBe("DEMO-A1");
 });
 
+it("recovers multilingual review text and private creator in authorized operator output", async () => {
+  const result = await findOperatorTag("abcdefghijklmnopqrstuv", "https://medot.example", async () => ({
+    token: "abcdefghijklmnopqrstuv", status: "PENDING", generic_name: "Paracetamol", strength: "500 mg", dosage_form: "Tablet", batch_number: "DEMO-ONLY", expiry_month: "2028-12",
+    brand_name: "Demo brand", instruction: "Demo only.", instruction_bn: "শুধুমাত্র ডেমো।", instruction_hi: "केवल डेमो।", created_by: "verified-operator",
+  }));
+  expect(result).toMatchObject({ brandName: "Demo brand", instruction: "Demo only.", instructionBn: "শুধুমাত্র ডেমো।", instructionHi: "केवल डेमो।", createdBy: "verified-operator" });
+});
+
 it("finds an older tag by its full URL after it leaves the recent list", async () => {
   const origin = "https://medot.example";
   const token = "abcdefghijklmnopqrstuv";

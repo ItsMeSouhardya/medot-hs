@@ -28,6 +28,10 @@ Use stable IDs in `src/data/medicine-catalog.json`; import those records in `scr
 
 This yields 17 catalog rows, with incomplete physical candidates visible but unavailable for provisioning until checked. Additional generic entries are demo labels, not recommended medicines or instructions. Keep the existing five records. For pack checks before initial seed, set complete label fields/readiness in the seed JSON; if an already-used identity needs a correction later, append a new ID rather than changing old tags through a shared row.
 
+M3 implementation status, 2026-10-02: all 17 rows are seeded in the authorized demo Neon database. The existing five plus Cetirizine, Ibuprofen, Losartan and Omeprazole are `DEMO_READY` fictional labels. All eight physical pack candidates are `PACK_CHECK_REQUIRED`; the user confirmed they have not yet been checked. The existing Atorvastatin identity remains generic with no guessed brand. The three prescription groups in `web/src/data/demo-prescriptions.ts` remain `DRAFT_REQUIRES_REVIEW`; no batch/expiry is invented or seeded, and the app does not offer them as live presets.
+
+Setup uses `ON CONFLICT (id) DO NOTHING`: editing a seeded JSON row does not change its stored identity or readiness. After physical verification, append a fully checked replacement ID when label details change; do not silently relabel existing tags. A readiness-only change for an unchanged identity needs an explicit verified database update, not a rerun assumed to overwrite it. Language review is a separate gate before entering preset instructions into a live demo record.
+
 ## Expiry observations from the actual images
 
 Atorvastatin appears to expire January 2026; Clopidogrel February 2026; IMPRO-RED October 2025. They are expired on the 2026-10-02 event date. Rosuvastatin appears to show May 2028. Verify all in hand. Batch and expiry must be copied from the actual pack during a physical demonstration; do not prefill a future expiry to hide the warning. Other photos are insufficiently clear for authoritative component/expiry transcription.

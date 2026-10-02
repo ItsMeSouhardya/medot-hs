@@ -10,6 +10,11 @@ export type OperatorTagRow = {
   dosage_form: string;
   batch_number: string;
   expiry_month: string;
+  brand_name?: string | null;
+  instruction?: string;
+  instruction_bn?: string | null;
+  instruction_hi?: string | null;
+  created_by?: string | null;
 };
 
 export type OperatorTag = {
@@ -21,6 +26,11 @@ export type OperatorTag = {
   batchNumber: string;
   expiryMonth: string;
   url: string;
+  brandName?: string;
+  instruction?: string;
+  instructionBn?: string;
+  instructionHi?: string;
+  createdBy?: string;
 };
 
 type RecentTagQuery = () => Promise<OperatorTagRow[]>;
@@ -36,6 +46,11 @@ function mapTag(row: OperatorTagRow, origin: string): OperatorTag {
     batchNumber: row.batch_number,
     expiryMonth: row.expiry_month,
     url: buildTagUrl(row.token, origin),
+    ...(row.brand_name ? { brandName: row.brand_name } : {}),
+    ...(row.instruction ? { instruction: row.instruction } : {}),
+    ...(row.instruction_bn?.trim() ? { instructionBn: row.instruction_bn } : {}),
+    ...(row.instruction_hi?.trim() ? { instructionHi: row.instruction_hi } : {}),
+    ...(row.created_by ? { createdBy: row.created_by } : {}),
   };
 }
 
@@ -43,7 +58,8 @@ async function queryRecentTags(): Promise<OperatorTagRow[]> {
   const sql = getSql();
   const rows = await sql`
     SELECT t.token, t.status, m.generic_name, m.strength, m.dosage_form,
-           t.batch_number, t.expiry_month
+           t.batch_number, t.expiry_month, m.brand_name,
+           t.instruction, t.instruction_bn, t.instruction_hi, t.created_by
     FROM tags AS t
     JOIN medicines AS m ON m.id = t.medicine_id
     ORDER BY t.created_at DESC
@@ -56,7 +72,8 @@ async function queryOneTag(token: string): Promise<OperatorTagRow | null> {
   const sql = getSql();
   const rows = await sql`
     SELECT t.token, t.status, m.generic_name, m.strength, m.dosage_form,
-           t.batch_number, t.expiry_month
+           t.batch_number, t.expiry_month, m.brand_name,
+           t.instruction, t.instruction_bn, t.instruction_hi, t.created_by
     FROM tags AS t
     JOIN medicines AS m ON m.id = t.medicine_id
     WHERE t.token = ${token}

@@ -1,0 +1,19 @@
+[
+  { "id": "metformin-500", "genericName": "Metformin", "strength": "500 mg", "dosageForm": "Tablet", "catalogStatus": "DEMO_READY" },
+  { "id": "amlodipine-5", "genericName": "Amlodipine", "strength": "5 mg", "dosageForm": "Tablet", "catalogStatus": "DEMO_READY" },
+  { "id": "atorvastatin-10", "genericName": "Atorvastatin", "strength": "10 mg", "dosageForm": "Tablet", "catalogStatus": "DEMO_READY" },
+  { "id": "pantoprazole-40", "genericName": "Pantoprazole", "strength": "40 mg", "dosageForm": "Tablet", "catalogStatus": "DEMO_READY" },
+  { "id": "paracetamol-500", "genericName": "Paracetamol", "strength": "500 mg", "dosageForm": "Tablet", "catalogStatus": "DEMO_READY" },
+  { "id": "clopidogrel-75", "brandName": "CLOPITAB", "genericName": "Clopidogrel", "strength": "75 mg", "dosageForm": "Tablet", "catalogStatus": "PACK_CHECK_REQUIRED" },
+  { "id": "rosuvastatin-10", "brandName": "ROSUMILL 10", "genericName": "Rosuvastatin", "strength": "10 mg", "dosageForm": "Tablet", "catalogStatus": "PACK_CHECK_REQUIRED" },
+  { "id": "zocmox-625-cv", "brandName": "Zocmox-625 CV", "genericName": "Amoxycillin and Potassium Clavulanate", "strength": "Component strengths require pack check", "dosageForm": "Tablet", "catalogStatus": "PACK_CHECK_REQUIRED" },
+  { "id": "rabijoi-dsr", "brandName": "Rabijoi DSR", "genericName": "Rabeprazole and Domperidone SR", "strength": "Component strengths require pack check", "dosageForm": "Capsule", "catalogStatus": "PACK_CHECK_REQUIRED" },
+  { "id": "adoprox-500", "brandName": "Adoprox-500", "genericName": "Cefuroxime Axetil", "strength": "Strength panel requires pack check", "dosageForm": "Tablet", "catalogStatus": "PACK_CHECK_REQUIRED" },
+  { "id": "impro-red", "brandName": "IMPRO-RED", "genericName": "Ferrous Ascorbate, Folic Acid and Zinc Sulphate", "strength": "Component strengths require pack check", "dosageForm": "Tablet", "catalogStatus": "PACK_CHECK_REQUIRED" },
+  { "id": "axovit-plus", "brandName": "Axovit-Plus", "genericName": "Multivitamin, Multimineral and Antioxidant", "strength": "Composition requires pack check", "dosageForm": "Softgel capsule", "catalogStatus": "PACK_CHECK_REQUIRED" },
+  { "id": "antox", "brandName": "ANTOX", "genericName": "Composition requires pack check", "strength": "Strength panel requires pack check", "dosageForm": "Capsule", "catalogStatus": "PACK_CHECK_REQUIRED" },
+  { "id": "cetirizine-10", "genericName": "Cetirizine", "strength": "10 mg", "dosageForm": "Tablet", "catalogStatus": "DEMO_READY" },
+  { "id": "ibuprofen-200", "genericName": "Ibuprofen", "strength": "200 mg", "dosageForm": "Tablet", "catalogStatus": "DEMO_READY" },
+  { "id": "losartan-50", "genericName": "Losartan", "strength": "50 mg", "dosageForm": "Tablet", "catalogStatus": "DEMO_READY" },
+  { "id": "omeprazole-20", "genericName": "Omeprazole", "strength": "20 mg", "dosageForm": "Capsule", "catalogStatus": "DEMO_READY" }
+]

@@ -11,6 +11,7 @@ const input = {
   batchNumber: "DEMO-A1",
   expiryMonth: "2028-02",
   instruction: "Sample instruction for testing only",
+  instructionBn: "শুধুমাত্র পরীক্ষার জন্য ডেমো নির্দেশনা",
 };
 
 function fakeRepository(exists = true) {
@@ -50,4 +51,17 @@ describe("pending provisioning", () => {
     }
     expect(fake.inserted).toBeUndefined();
   });
+});
+
+it("persists multilingual instructions and takes creator only from server context", async () => {
+  const fake = fakeRepository();
+  const result = await createPendingTag({ ...input, instructionHi: "केवल परीक्षण के लिए डेमो निर्देश", createdBy: "forged-client-user" }, fake.repository, "https://medot.example", "verified-user");
+  expect(fake.inserted).toMatchObject({ token: result.token, createdBy: "verified-user", instructionBn: input.instructionBn, instructionHi: "केवल परीक्षण के लिए डेमो निर्देश" });
+});
+
+it("does not insert a tag for a catalog item blocked by pack readiness", async () => {
+  const fake = fakeRepository(false);
+  await expect(createPendingTag({ ...input, medicineId: "rabijoi-dsr" }, fake.repository, "https://medot.example"))
+    .rejects.toMatchObject({ code: "UNKNOWN_MEDICINE" });
+  expect(fake.inserted).toBeUndefined();
 });
