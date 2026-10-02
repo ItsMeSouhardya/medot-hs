@@ -8,6 +8,7 @@ Read only the references relevant to the task after loading `CONTEXT.md` and the
 | [Execution plan](superpowers/plans/2026-10-01-medot-hs.md) | Implementing or resuming | Ordered tasks, files, interfaces, 22-hour schedule, eight commits |
 | [Base audit](BASE_AUDIT.md) | Importing or diagnosing a regression | Observed prototype behavior and baseline evidence |
 | [Architecture](ARCHITECTURE.md) | Changing database, auth, APIs, or speech services | Proposed data and service contracts |
+| [Clerk setup](CLERK_SETUP.md) | Configuring M2 accounts or checking live sign-in | Environment, allowlist, local and Render checks |
 | [Design system and UX](DESIGN_AND_UX.md) | Building homepage, pharmacy, patient, or brand assets | Layout, visual direction, copy, interactions |
 | [Speech and languages](SPEECH_AND_LANGUAGES.md) | Building multilingual text or audio | Provider, translation, playback, cache and fallback rules |
 | [Render runbook](RENDER_RUNBOOK.md) | Configuring or deploying environments | Setup, secrets, health, stable URL, rollback |

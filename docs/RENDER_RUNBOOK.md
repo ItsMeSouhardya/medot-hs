@@ -1,6 +1,6 @@
 # Render deployment and setup runbook
 
-Run this during M1 and revisit at every deploy. On 2026-10-02, the local baseline and root `render.yaml` were verified. No Render service or public deployment has been created. The user authorized reusing the existing demo Neon configuration and selected `https://github.com/ItsMeSouhardya/medot-hs.git` as the repository; root `main` tracks its existing initial commit. No push has occurred.
+Run this during M1 and revisit at every deploy. On 2026-10-02, M1/M2 local checks and root `render.yaml` were verified. No Render service or public deployment has been created. The user authorized reusing the existing demo Neon configuration and selected `https://github.com/ItsMeSouhardya/medot-hs.git` as the repository. The user committed M1 at `520a3e0`; M2 is uncommitted. Agent execution has not pushed.
 
 ## Preflight
 
@@ -26,7 +26,7 @@ Deploy this full Next.js app as a **Node web service**, not a static export. Ret
 
 The root `render.yaml` has `rootDir: web`, runtime node, build/start/health settings and secret env entries using `sync: false`. Automatic deployments are off; deploy each tested milestone manually. Set Node explicitly rather than relying on Render's changing default. [Node version configuration](https://render.com/docs/node-version), [Blueprint specification](https://render.com/docs/blueprint-spec).
 
-M1's blueprint includes only database/origin and temporary password/session settings. Add Clerk and ElevenLabs entries at their milestones. New `sync: false` entries require manual dashboard configuration on an existing service; verify the actual environment before deploying.
+The M2 blueprint includes database/origin, Clerk keys and the pharmacy allowlist. Temporary password/session settings were removed. Add ElevenLabs entries at M4. New `sync: false` entries require manual dashboard configuration on an existing service; verify the actual environment before deploying.
 
 ## Environment matrix
 
@@ -46,7 +46,7 @@ M1's blueprint includes only database/origin and temporary password/session sett
 | `ELEVENLABS_MAX_GENERATIONS_PER_DAY` | Server configuration | `100` initial demo call-attempt cap |
 | `DEMO_PUBLIC_TOKEN` | Server configuration | Actual activated fictional sample token for homepage demo, optional until created |
 
-M1 temporarily uses the imported `ADMIN_PASSWORD` and `SESSION_SECRET` for the base smoke flow. Remove them and disable the password login route at Clerk cutover. Never configure `NEXT_PUBLIC_DATABASE_URL` or expose the ElevenLabs/Clerk secret keys.
+M1 used the imported `ADMIN_PASSWORD` and `SESSION_SECRET` for its baseline smoke flow. M2 removed them from local/example/blueprint configuration and disabled password login (410). Remove these obsolete settings manually if already present on a hosting dashboard. Never configure `NEXT_PUBLIC_DATABASE_URL` or expose the ElevenLabs/Clerk secret keys.
 
 `web/.env.example` includes the milestone variable names and non-secret defaults. Keep `.env.local` and all real environment files ignored. M1 reused only the user-authorized demo database/password/session values and set the local origin explicitly; the source environment file was preserved. Never copy extra source secrets automatically. Changes to `NEXT_PUBLIC_*` values require a rebuild.
 
@@ -62,7 +62,7 @@ For a shared `onrender.com` hackathon URL, use and label the Clerk development i
 2. Add `/api/live`, Render configuration and example env. Install no new product stack yet. Run imported tests/lint/build.
 3. Set the demo environment locally. Run `npm run db:setup` from `web/` against the dedicated Neon target. Do not run migrations in a public request handler or every server startup.
 4. Create/connect the Render service when deployment is authorized. Record its actual URL, set `APP_ORIGIN` to it, build and deploy. Check `/api/live` then `/api/health` (DB readiness).
-5. Before real tags, create one fictional record, independently write/read/activate and check NFC/QR equality. Follow the inherited basic login until M2 cutover.
+5. Configure and check actual Clerk sign-in through [the M2 setup guide](CLERK_SETUP.md). Before real tags, create one fictional record, independently write/read/activate and check NFC/QR equality. The old password login is disabled.
 6. At M3, rerun the additive setup twice; confirm existing records survive and seed count is stable. For free Render, run setup from the configured local machine/CI against Neon: do not depend on a paid pre-deploy command, shell access, or one-off job. [Deployment behavior](https://render.com/docs/deploys).
 7. After Clerk cutover and speech integration, rerun authorized/unauthorized/public checks on the actual deployed origin. Before judging, verify persistence after a subsequent successful deploy.
 

@@ -1,9 +1,11 @@
-import { hasSameOrigin, requireAdmin } from "@/lib/admin-auth";
+import { getPharmacyAccess, pharmacyAccessDenied } from "@/lib/pharmacy-auth";
+import { hasSameOrigin } from "@/lib/request-origin";
 import { createPendingTag, ProvisionError } from "@/lib/provision";
 import { provisionRepository } from "@/lib/tag-repository";
 
 export async function POST(request: Request) {
-  if (!requireAdmin(request)) return new Response("Unauthorized", { status: 401 });
+  const denied = pharmacyAccessDenied(await getPharmacyAccess());
+  if (denied) return denied;
   if (!hasSameOrigin(request)) return new Response("Invalid origin", { status: 403 });
 
   let body: unknown;

@@ -1,4 +1,4 @@
-# M1 baseline; add Clerk and ElevenLabs settings at their milestones.
+# M2 authentication baseline; add ElevenLabs settings at M4.
 services:
   - type: web
     name: medot-hs
@@ -17,7 +17,13 @@ services:
         sync: false
       - key: APP_ORIGIN
         sync: false
-      - key: ADMIN_PASSWORD
+      - key: NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY
         sync: false
-      - key: SESSION_SECRET
+      - key: CLERK_SECRET_KEY
         sync: false
+      - key: PHARMACY_ALLOWED_USER_IDS
+        sync: false
+      - key: NEXT_PUBLIC_CLERK_SIGN_IN_URL
+        value: /sign-in
+      - key: NEXT_PUBLIC_CLERK_SIGN_IN_FALLBACK_REDIRECT_URL
+        value: /pharmacy

@@ -13,7 +13,7 @@ export default function Home() {
         Operators can create a pending tag, write its URL, verify the readback,
         and activate it for a sample strip.
       </p>
-      <Link className="button-link" href="/admin">Open operator area</Link>
+      <Link className="button-link" href="/pharmacy">Open pharmacy portal</Link>
       <p className="small-note">
         For prototype testing with sample packaging only. This does not verify a
         medicine&apos;s authenticity or provide medical advice.

@@ -1,8 +1,9 @@
-import { requireAdmin } from "@/lib/admin-auth";
+import { getPharmacyAccess, pharmacyAccessDenied } from "@/lib/pharmacy-auth";
 import { getSql } from "@/lib/db";
 
-export async function GET(request: Request) {
-  if (!requireAdmin(request)) return new Response("Unauthorized", { status: 401 });
+export async function GET() {
+  const denied = pharmacyAccessDenied(await getPharmacyAccess());
+  if (denied) return denied;
   try {
     const sql = getSql();
     const medicines = await sql`
@@ -10,7 +11,7 @@ export async function GET(request: Request) {
              dosage_form AS "dosageForm"
       FROM medicines ORDER BY generic_name
     `;
-    return Response.json(medicines);
+    return Response.json(medicines, { headers: { "Cache-Control": "no-store" } });
   } catch {
     return new Response("Medicine catalog unavailable", { status: 503 });
   }

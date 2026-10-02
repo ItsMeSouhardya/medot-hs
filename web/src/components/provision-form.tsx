@@ -63,7 +63,7 @@ export default function ProvisionForm({ medicines }: { medicines: MedicineOption
         <p className="url">{result.url}</p>
         <QrCode url={result.url} />
         <TagWriter token={result.token} url={result.url} />
-        <p><Link href="/admin/tags">Find this record again in Recent tags</Link></p>
+        <p><Link href="/pharmacy/tags">Find this record again in Recent tags</Link></p>
       </section>
     );
   }

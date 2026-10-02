@@ -74,3 +74,7 @@ dd { margin: .3rem 0 0; }
 section { margin-top: 1.5rem; }
 ol { padding-left: 1.5rem; }
 .tag-card { border: 2px solid #bdc7d2; border-radius: .4rem; padding: 1rem; margin-top: 2rem; }
+
+.pharmacy-nav { border-bottom: 1px solid #bdc7d2; }
+.pharmacy-nav nav { width: min(100% - 2rem, 60rem); margin: 0 auto; display: flex; flex-wrap: wrap; gap: 1rem; align-items: center; padding: .75rem 0; }
+.pharmacy-nav a { padding: .5rem 0; }
