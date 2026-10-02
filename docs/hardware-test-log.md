@@ -1,6 +1,6 @@
 # MEDOT hardware and acceptance log
 
-Status: **not run**. The Galaxy F62 and NTAG213 tags are not currently available. Leave results blank until observed; software test results are in the project README.
+Status: **not run**, updated 2026-10-02 during M7. No new physical observations were supplied. The inherited log listed the Galaxy F62 and NTAG213 tags as unavailable; confirm current device/tag availability with the teammate. Leave physical results blank until observed. [M7 release checks](M7_RELEASE_CHECKS.md) records software evidence separately. There is no Render service yet and M4 voice/language integration remains pending.
 
 ## Test setup
 
@@ -48,6 +48,28 @@ Use only sample or empty packaging and test instructions. Provision two distinct
 | TalkBack reaches title, warning, fields, and button | | |
 | Screen-obscured usability probe | | |
 | Record survives a fresh deployment | | |
+
+## Language, accessibility and final pairing
+
+Use the actual printed values and the reviewed fixtures; no inferred expiry or generated treatment instruction. All supplied packs and prescription presets currently remain blocked. For each medicine entry in the three draft cases, record who checked its pack identity and English/Bengali text; Hindi is optional. Unreviewed entries cannot be used to demonstrate a clinical instruction.
+
+| Observation | Actual result | Tester / date |
+| --- | --- | --- |
+| First strip identity, printed batch/expiry and token suffix | | |
+| Second strip identity, printed batch/expiry and distinct token suffix | | |
+| Each QR URL exactly equals its NFC URL | | |
+| English instruction and actual audio pronunciation reviewed | | |
+| Bengali instruction and actual audio pronunciation reviewed | | |
+| Hindi instruction/audio reviewed, if completed | | |
+| TalkBack order: warning, identity, instruction, expiry, language and audio | | |
+| Read/Stop via keyboard; visible focus after Stop | | |
+| Native browser zoom at 200% | | |
+| Screen-obscured find/tap/read usability probe | | |
+| NFC recognition time separately from page ready time | | |
+| User-triggered audio delay; cold versus warm service | | |
+| Revoked spare blocks a new read from an already open page | | |
+
+Acceptance: the final clip placement recognizes the correct link at least 9/10 times within three seconds, with zero wrong-record openings. A static fixture, local production test or browser state does not count as this result.
 
 Record any failed write without activating its pending record. Note the next hardware change to try, if needed:
 

@@ -14,9 +14,10 @@ Read only the references relevant to the task after loading `CONTEXT.md` and the
 | [Render runbook](RENDER_RUNBOOK.md) | Configuring or deploying environments | Setup, secrets, health, stable URL, rollback |
 | [Demo catalog and script](DEMO_CATALOG.md) | Seeding or rehearsing | Pack candidates, fictional prescriptions, real-expiry constraints |
 | [Quality and release](QUALITY_AND_RELEASE.md) | Verifying milestones and releasing | Automated/manual gates and final README contract |
+| [M7 integration evidence](M7_RELEASE_CHECKS.md) | Reproducing current integration checks or first Render setup | Observed local evidence, safety fixes and pending external gates |
 | [Optional features](FEATURES.md) | Considering additions or reducing scope | Ranked extras and time boundaries |
 | [Decision record](DECISIONS.md) | A proposal conflicts with this plan | Why the choices were made and unresolved external facts |
 
 The dated spec, plan, and references describe intended implementation. `BASE_AUDIT.md` and `CONTEXT.md` distinguish observations from proposals. Checkbox completion is updated only after work and verification.
 
-Current handoff: M6 brand/homepage implementation and automated checks passed; native 200% zoom and real authorized pharmacy-session visuals remain manual. M4 patient localization and ElevenLabs are the next implementation priority. See `CONTEXT.md` for exact checks and blockers.
+Current handoff: M7 local integration checks and fresh browser-speech safety fixes passed. The user chose to keep M4 pending; no Render service exists yet. M7 live/deployed/device gates remain open. See `CONTEXT.md` and the M7 evidence document for exact checks and blockers.

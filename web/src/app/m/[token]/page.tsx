@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { expiryState } from "@/lib/domain";
 import { resolveTag } from "@/lib/tag-repository";
-import { buildSpokenText, formatExpiryMonth } from "@/lib/speech-text";
+import { formatExpiryMonth } from "@/lib/speech-text";
 import ReadAloud from "./read-aloud";
 import MedotLogo from "@/components/brand/medot-logo";
 
@@ -64,7 +64,6 @@ export default async function PatientPage({ params }: Props) {
 
   const { record } = lookup;
   const expired = expiryState(record.expiryMonth) === "EXPIRED";
-  const spokenText = buildSpokenText(record, expired);
 
   return (
     <main className="patient-page">
@@ -77,7 +76,7 @@ export default async function PatientPage({ params }: Props) {
       )}
       <h1>{record.genericName}</h1>
       <p className="strength">{record.strength} · {record.dosageForm}</p>
-      <ReadAloud text={spokenText} />
+      <ReadAloud key={token} token={token} />
       <dl>
         <div><dt>Batch</dt><dd>{record.batchNumber}</dd></div>
         <div><dt>Labelled expiry</dt><dd>{formatExpiryMonth(record.expiryMonth)}</dd></div>

@@ -4,6 +4,8 @@ A tactile NFC clip that connects a medicine strip to an accessible, spoken recor
 
 This is the hackathon execution workspace. The prototype is imported into `web/`; M1–M3, M5 and M6 local code checks are verified. M4 patient localization and ElevenLabs remain unimplemented. Render configuration is prepared; no public deployment has been made. Clerk keys are configured locally; real signed-in account checks remain pending.
 
+M7 adds reproducible integration checks and fixes stale browser speech: each read verifies the current active record, includes the current expiry warning and supports cancellation with restored keyboard focus. Local checks passed 128 tests plus seven separately enabled Neon cases and 29 production HTTP/persistence checks. [M7 evidence and Render handoff](docs/M7_RELEASE_CHECKS.md) lists the pending live account, provider and hardware gates. This is not a completed release verification.
+
 Start with [the document index](docs/README.md), [working context](CONTEXT.md), and [the 22-hour implementation plan](docs/superpowers/plans/2026-10-01-medot-hs.md). Agent instructions are in [AGENTS.md](AGENTS.md).
 
 The current app uses Next.js 16.3.6, React 19.2.8, Neon Postgres and Clerk 7.9.10. Pharmacy pages and APIs require a verified Clerk session and an authorized user ID. Provisioning now requires English and Bengali instructions, with optional Hindi. The 17-entry demo catalog contains nine fictional labels and eight blocked physical packs. Three prescription fixtures remain drafts awaiting language review. Existing English-only active tags remain readable. ElevenLabs and patient language controls are planned next. NFC and QR resolve the same token URL; activation still follows independent physical readback.

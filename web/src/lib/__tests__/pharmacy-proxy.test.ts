@@ -10,7 +10,7 @@ it("initializes Clerk only for pharmacy, sign-in and admin APIs", () => {
   for (const url of ["/pharmacy", "/pharmacy/provision", "/pharmacy/tags", "/sign-in", "/sign-in/factor-one", "/api/admin/medicines", "/api/admin/tags/a/activate"]) {
     expect(doesProxyMatch({ config, nextConfig: {}, url })).toBe(true);
   }
-  for (const url of ["/", "/m/abcdefghijklmnopqrstuv", "/api/live", "/api/health", "/api/public/tags/a/speech", "/admin", "/_next/static/app.js"]) {
+  for (const url of ["/", "/m/abcdefghijklmnopqrstuv", "/api/live", "/api/health", "/api/public/tags/abcdefghijklmnopqrstuv", "/api/public/tags/a/speech", "/admin", "/_next/static/app.js"]) {
     expect(doesProxyMatch({ config, nextConfig: {}, url })).toBe(false);
   }
 });
