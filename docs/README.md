@@ -18,3 +18,5 @@ Read only the references relevant to the task after loading `CONTEXT.md` and the
 | [Decision record](DECISIONS.md) | A proposal conflicts with this plan | Why the choices were made and unresolved external facts |
 
 The dated spec, plan, and references describe intended implementation. `BASE_AUDIT.md` and `CONTEXT.md` distinguish observations from proposals. Checkbox completion is updated only after work and verification.
+
+Current handoff: M6 brand/homepage implementation and automated checks passed; native 200% zoom and real authorized pharmacy-session visuals remain manual. M4 patient localization and ElevenLabs are the next implementation priority. See `CONTEXT.md` for exact checks and blockers.

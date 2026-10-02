@@ -3,6 +3,7 @@ import { expiryState } from "@/lib/domain";
 import { resolveTag } from "@/lib/tag-repository";
 import { buildSpokenText, formatExpiryMonth } from "@/lib/speech-text";
 import ReadAloud from "./read-aloud";
+import MedotLogo from "@/components/brand/medot-logo";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
@@ -15,7 +16,7 @@ type Props = { params: Promise<{ token: string }> };
 function Unavailable({ title, detail }: { title: string; detail: string }) {
   return (
     <main className="patient-page">
-      <p className="eyebrow">MEDOT</p>
+      <MedotLogo />
       <h1>{title}</h1>
       <p role="alert">{detail}</p>
     </main>
@@ -67,7 +68,8 @@ export default async function PatientPage({ params }: Props) {
 
   return (
     <main className="patient-page">
-      <p className="eyebrow">MEDOT · Medicine identified</p>
+      <MedotLogo />
+      <p className="eyebrow">Medicine identified</p>
       {expired && (
         <p className="warning" role="alert">
           Labelled expiry has passed. Verify this medicine with a pharmacist.

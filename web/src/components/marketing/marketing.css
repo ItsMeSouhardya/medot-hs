@@ -1,0 +1,253 @@
+.marketing-site {
+  --paper: #f6f7f2;
+  --surface: #fff;
+  --forest: #215c50;
+  --ink: #172f2b;
+  --muted: #526860;
+  --mint: #ddede5;
+  --line: #c8d6ce;
+  background: var(--paper);
+  color: var(--ink);
+  font-size: 18px;
+  line-height: 1.6;
+}
+.marketing-site a { color: inherit; }
+.marketing-site section { margin-top: 0; }
+.marketing-site button { margin: 0; }
+.marketing-site h1, .marketing-site h2, .marketing-site h3 { font-family: var(--font-heading), sans-serif; font-weight: 600; letter-spacing: -.045em; }
+.marketing-site h2 { font-size: clamp(32px, 3.3vw, 44px); line-height: 1.18; margin: 0 0 24px; }
+.marketing-site h3 { font-size: 25px; line-height: 1.3; margin: 24px 0 12px; letter-spacing: -.025em; }
+.marketing-site :lang(bn) { font-family: "MEDOT Bengali", "Nirmala UI", sans-serif; letter-spacing: normal; }
+.marketing-site :lang(hi) { font-family: "MEDOT Hindi", "Nirmala UI", sans-serif; letter-spacing: normal; }
+.marketing-site p { line-height: 1.65; }
+.marketing-site :focus-visible { outline: 3px solid #86530e; outline-offset: 5px; }
+.marketing-site [id] { scroll-margin-top: 112px; }
+.marketing-container { width: min(1200px, calc(100% - 48px)); margin-inline: auto; }
+main.marketing-page { width: 100%; max-width: none; padding: 0; margin: 0; }
+.marketing-section { padding-block: 88px; }
+.marketing-eyebrow { color: var(--forest); font-size: 12px; letter-spacing: .13em; text-transform: uppercase; font-weight: 700; margin: 0 0 24px; }
+.marketing-header { position: sticky; top: 0; z-index: 10; border-bottom: 1px solid var(--line); background: var(--paper); }
+.marketing-nav { width: min(1200px, calc(100% - 48px)); margin: auto; min-height: 88px; display: flex; align-items: center; justify-content: space-between; gap: 24px; }
+.marketing-brand { flex-shrink: 0; text-decoration: none; }
+.marketing-links { display: flex; align-items: center; gap: 24px; font-size: 13px; font-weight: 600; }
+.marketing-links > a { display: inline-flex; align-items: center; min-height: 48px; text-decoration: none; }
+.marketing-links > a:hover, .marketing-dropdown summary:hover { color: var(--forest); text-decoration: underline; text-underline-offset: 5px; }
+.marketing-links .marketing-sign-in { border: 1px solid var(--forest); border-radius: 9px; padding: 8px 14px; gap: 10px; color: var(--forest); }
+.marketing-sign-in svg { width: 17px; }
+.marketing-menu-button { display: none; }
+.marketing-dropdown { position: relative; }
+.marketing-dropdown summary { min-height: 48px; display: flex; align-items: center; gap: 5px; list-style: none; cursor: pointer; }
+.marketing-dropdown summary::-webkit-details-marker, .faq-list summary::-webkit-details-marker { display: none; }
+.marketing-dropdown summary svg { width: 14px; }
+.marketing-dropdown > div { position: absolute; top: 50px; right: 0; width: 250px; padding: 8px; border: 1px solid var(--line); border-radius: 12px; background: white; box-shadow: 0 12px 24px #172f2b12; }
+.marketing-dropdown > div a { display: block; padding: 12px; text-decoration: none; border-radius: 6px; min-height: 48px; }
+.marketing-dropdown > div a:hover { background: var(--mint); }
+.marketing-skip { position: fixed; top: -100px; left: 24px; padding: 12px; background: white; z-index: 20; }
+.marketing-skip:focus { top: 12px; }
+.marketing-hero { display: grid; grid-template-columns: 1.07fr 1fr; align-items: center; gap: 56px; padding-block: 72px 64px; }
+.hero-copy h1 { font-size: clamp(40px, 4.7vw, 62px); line-height: 1.1; margin: 0 0 28px; font-weight: 600; }
+.hero-copy h1 em { color: var(--forest); font-style: normal; }
+.hero-copy .marketing-eyebrow { display: flex; align-items: center; gap: 10px; font-size: 11px; }
+.hero-copy .marketing-eyebrow > span { width: 7px; height: 7px; border-radius: 50%; background: var(--forest); flex-shrink: 0; }
+.hero-description { color: var(--muted); max-width: 470px; margin-bottom: 28px; }
+.marketing-actions { display: flex; flex-wrap: wrap; gap: 12px; }
+.marketing-site .marketing-button { display: inline-flex; align-items: center; justify-content: center; min-height: 54px; gap: 12px; padding: 13px 20px; border-radius: 10px; border: 1px solid var(--forest); font-weight: 600; font-size: 14px; text-decoration: none; transition: background-color 180ms, box-shadow 180ms; }
+.marketing-site .marketing-button.primary { color: white; background: var(--forest); }
+.marketing-site .marketing-button.primary:hover { background: #174b40; box-shadow: 0 3px 12px #215c501a; }
+.marketing-site .marketing-button.secondary { background: transparent; color: var(--forest); }
+.marketing-site .marketing-button.secondary:hover { background: var(--mint); }
+.marketing-button svg { width: 18px; }
+.hero-languages { display: flex; align-items: center; gap: 16px; margin-top: 28px; flex-wrap: wrap; font-size: 13px; }
+.hero-languages > span:not(.language-note) { padding-right: 16px; border-right: 1px solid var(--line); }
+.hero-languages .language-note { color: var(--muted); font-size: 12px; }
+.hero-disclaimer { font-size: 12px; color: var(--muted); max-width: 410px; margin-top: 12px; }
+.hero-illustration { position: relative; height: 520px; margin: 0; border-radius: 32px; background: #e5ece0; overflow: hidden; isolation: isolate; }
+.hero-orbit { position: absolute; border-radius: 50%; border: 1px solid #c1d1be; z-index: -1; }
+.orbit-one { width: 420px; height: 420px; right: -75px; top: 110px; }
+.orbit-two { width: 330px; height: 330px; right: -30px; top: 155px; }
+.illustration-note { position: absolute; top: 30px; left: 28px; right: 20px; color: var(--forest); font-size: 12px; display: flex; gap: 9px; align-items: center; }
+.note-dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: var(--forest); flex-shrink: 0; }
+.illustration-strip { position: absolute; width: 235px; height: 315px; left: 15px; top: 105px; transform: rotate(-16deg); filter: drop-shadow(0 12px 10px #172f2b12); }
+.concept-phone { position: absolute; width: 217px; height: 360px; right: 28px; top: 104px; border: 7px solid #294940; border-radius: 30px; background: #fffef9; box-shadow: 8px 16px 24px #172f2b1a; transform: rotate(8deg); }
+.phone-camera { width: 44px; height: 5px; border-radius: 8px; background: #294940; margin: 10px auto 0; }
+.phone-content { padding: 15px 17px; }
+.phone-content .medot-logo { font-size: 14px; gap: 5px; }
+.phone-content .medot-logo svg { width: 22px; height: 22px; }
+.phone-label { text-transform: uppercase; letter-spacing: .12em; font-size: 8px; color: var(--muted); margin-top: 20px; }
+.phone-content h3 { font-size: 24px; margin: 7px 0 14px; }
+.phone-lines span { display: block; height: 5px; background: #d7e1d8; width: 75%; margin: 7px 0; border-radius: 3px; }
+.phone-lines span:last-child { width: 48%; }
+.phone-audio { display: flex; align-items: center; gap: 9px; background: var(--forest); color: white; font-size: 11px; padding: 12px; border-radius: 8px; margin-top: 20px; }
+.phone-audio svg { width: 17px; height: 17px; }
+.phone-detail span { display: block; border-bottom: 1px solid var(--line); padding: 10px 0; font-size: 9px; }
+.phone-demo { font-size: 8px; color: var(--muted); }
+.illustration-chip { position: absolute; left: 24px; bottom: 58px; font-size: 11px; display: flex; gap: 8px; align-items: center; background: white; padding: 10px 16px; border-radius: 50px; box-shadow: 0 3px 12px #172f2b0a; }
+.illustration-chip svg { width: 18px; height: 18px; }
+.hero-illustration figcaption { position: absolute; bottom: 24px; left: 28px; right: 20px; font-size: 10px; color: var(--muted); }
+.purpose-band { border-block: 1px solid var(--line); background: #eef2e9; }
+.purpose-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 40px; padding-block: 28px; }
+.purpose-grid > div { display: flex; gap: 16px; align-items: center; }
+.purpose-grid > div > svg { color: var(--forest); width: 26px; height: 26px; flex-shrink: 0; }
+.purpose-grid p { margin: 0; font-size: 14px; }
+.purpose-grid strong, .purpose-grid span { display: block; }
+.purpose-grid span { font-size: 12px; color: var(--muted); margin-top: 3px; }
+.section-intro { max-width: 560px; }
+.section-intro > p:not(.marketing-eyebrow) { color: var(--muted); margin-bottom: 32px; }
+.how-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; }
+.how-card { padding: 32px; border: 1px solid var(--line); background: white; border-radius: 20px; }
+.how-card-top { display: flex; justify-content: space-between; align-items: center; }
+.how-card-top span { font-family: var(--font-heading), sans-serif; font-size: 13px; color: var(--muted); }
+.how-card-top svg { width: 42px; height: 42px; color: var(--forest); padding: 8px; border-radius: 10px; background: var(--mint); }
+.how-card p { color: var(--muted); font-size: 16px; margin-bottom: 0; }
+.preparation-note { display: flex; align-items: center; gap: 12px; color: var(--muted); font-size: 13px; padding-top: 12px; }
+.preparation-note svg { color: var(--forest); flex-shrink: 0; }
+.audience-section { padding-block: 64px; border-block: 1px solid var(--line); }
+.audience-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; }
+.audience-panel { padding: 40px; border-radius: 24px; }
+.patient-panel { background: var(--mint); }
+.pharmacy-panel { background: white; border: 1px solid var(--line); }
+.audience-panel > p:not(.marketing-eyebrow) { color: var(--muted); }
+.audience-panel ul { padding: 0; list-style: none; font-size: 15px; margin: 28px 0; }
+.audience-panel li { display: flex; align-items: center; gap: 10px; margin: 12px 0; }
+.audience-panel li svg { width: 18px; height: 18px; color: var(--forest); flex-shrink: 0; }
+.marketing-text-link { display: inline-flex; gap: 12px; align-items: center; min-height: 48px; font-size: 14px; font-weight: 700; text-underline-offset: 5px; }
+.marketing-text-link svg { flex-shrink: 0; width: 20px; }
+.workflow-chips { display: flex; align-items: center; gap: 10px; margin-top: 28px; }
+.workflow-chips span { border: 1px solid var(--line); border-radius: 8px; padding: 10px; font-size: 12px; background: var(--paper); }
+.workflow-chips svg { width: 15px; flex-shrink: 0; }
+.audience-panel .workflow-note { font-size: 14px; margin-block: 18px; }
+.accessibility-grid { display: grid; grid-template-columns: 1.08fr 1fr; gap: 96px; align-items: center; }
+.accessibility-copy > p:not(.marketing-eyebrow) { color: var(--muted); }
+.accessibility-list { padding: 0; list-style: none; margin-block: 28px; }
+.accessibility-list li { display: flex; align-items: flex-start; gap: 16px; margin: 22px 0; font-size: 15px; color: var(--muted); }
+.accessibility-list svg { flex-shrink: 0; color: var(--forest); width: 20px; margin-top: 3px; }
+.accessibility-list strong { display: block; color: var(--ink); font-weight: 600; margin-bottom: 4px; }
+.accessibility-copy .language-progress { font-size: 13px; border-left: 2px solid var(--forest); padding-left: 16px; }
+.language-preview { border-radius: 24px; background: #e7ede3; padding: 24px; }
+.preview-tabs { display: flex; gap: 8px; margin-bottom: 24px; }
+.marketing-site .preview-tabs button { flex: 1; min-height: 48px; padding: 8px 12px; border: 1px solid #7f978b; border-radius: 10px; background: transparent; color: var(--forest); font-size: 14px; font-weight: 600; }
+.marketing-site .preview-tabs button[aria-pressed="true"] { background: var(--forest); color: white; border-color: var(--forest); }
+.marketing-site .preview-tabs button { border-color: var(--muted); }
+.preview-record { background: white; border: 1px solid var(--line); border-radius: 16px; padding: 28px; }
+.preview-record > .medot-logo { color: var(--forest); }
+.preview-record h3 { font-size: 26px; line-height: 1.6; margin: 16px 0 6px; }
+.preview-record > p { color: var(--muted); font-size: 16px; }
+.preview-instruction { border-top: 1px solid var(--line); padding-top: 18px; margin: 22px 0; }
+.preview-instruction > span { font-size: 13px; font-weight: 600; }
+.preview-line { height: 7px; background: #e3eae5; border-radius: 5px; margin-top: 13px; width: 85%; }
+.preview-line.short { width: 63%; margin-top: 8px; }
+.marketing-site .preview-record button { min-height: 64px; width: 100%; display: flex; gap: 10px; align-items: center; justify-content: center; border: 1px solid var(--forest); border-radius: 10px; padding: 12px; background: var(--forest); color: white; font-size: 16px; cursor: default; opacity: 1; }
+.preview-record button svg { flex-shrink: 0; width: 22px; }
+.preview-caption { font-size: 12px; color: var(--muted); margin: 20px 4px 0; }
+.responsible-panel { border-radius: 24px; background: #e8ece0; padding: 40px; display: grid; grid-template-columns: 1fr 1.2fr; gap: 64px; }
+.responsible-panel h2 { font-size: 34px; margin-bottom: 0; }
+.responsible-panel > div > p:not(.marketing-eyebrow) { font-size: 15px; color: var(--muted); margin-top: 0; }
+.faq-section { display: grid; grid-template-columns: 1fr 1.35fr; gap: 64px; }
+.faq-list details { border-bottom: 1px solid var(--line); }
+.faq-list details:first-child { border-top: 1px solid var(--line); }
+.faq-list summary { display: flex; align-items: center; justify-content: space-between; gap: 24px; list-style: none; cursor: pointer; padding: 24px 0; font-size: 16px; font-weight: 600; }
+.faq-list summary svg { width: 18px; height: 18px; flex-shrink: 0; }
+.faq-list details[open] summary svg { transform: rotate(180deg); }
+.faq-list details p { font-size: 15px; color: var(--muted); padding-bottom: 18px; margin-top: 0; }
+.final-cta { padding-block: 64px; text-align: center; border-block: 1px solid var(--line); background: #edf1e7; }
+.final-cta .medot-logo { color: var(--forest); margin-bottom: 20px; }
+.final-cta h2 { margin-bottom: 16px; }
+.final-cta p { color: var(--muted); margin-bottom: 28px; font-size: 16px; }
+.marketing-footer { padding-block: 40px; display: flex; justify-content: space-between; gap: 40px; align-items: center; }
+.marketing-footer a { text-decoration: none; }
+.marketing-footer p { font-size: 12px; color: var(--muted); margin-bottom: 0; }
+.marketing-footer nav { display: flex; flex-wrap: wrap; gap: 24px; font-size: 13px; }
+.marketing-footer nav a { min-height: 48px; display: inline-flex; align-items: center; }
+.marketing-footer nav a:hover { text-decoration: underline; }
+@media (max-width: 1100px) {
+  .marketing-links { gap: 14px; font-size: 12px; }
+  .marketing-hero { gap: 28px; }
+  .accessibility-grid { gap: 40px; }
+  .concept-phone { right: 18px; width: 194px; }
+  .illustration-strip { width: 215px; left: 0; }
+}
+@media (max-width: 960px) {
+  .marketing-nav { flex-wrap: wrap; min-height: 76px; padding-block: 12px; }
+  .marketing-menu-button { display: flex; gap: 8px; align-items: center; background: transparent; color: var(--forest); border: 1px solid var(--forest); border-radius: 8px; min-height: 48px; padding: 10px 14px; font-size: 14px; }
+  .marketing-menu-button svg { width: 18px; }
+  .marketing-site .marketing-menu-button:hover { color: var(--forest); background: var(--mint); }
+  .marketing-links { display: none; width: 100%; padding-block: 10px; }
+  .marketing-links.is-open { display: flex; flex-direction: column; align-items: stretch; gap: 4px; max-height: calc(100dvh - 100px); overflow-y: auto; }
+  .marketing-links > a, .marketing-dropdown summary { font-size: 16px; padding-inline: 8px; }
+  .marketing-links .marketing-sign-in { justify-content: space-between; margin-top: 12px; }
+  .marketing-dropdown > div { position: static; width: 100%; box-shadow: none; margin-bottom: 12px; }
+  .marketing-hero { grid-template-columns: 1fr; padding-top: 48px; gap: 40px; }
+  .hero-copy { max-width: 650px; }
+  .hero-copy h1 { font-size: 56px; }
+  .hero-description { max-width: 550px; }
+  .hero-illustration { height: 490px; width: 100%; }
+  .illustration-strip { left: calc(50% - 240px); width: 240px; top: 95px; }
+  .concept-phone { right: calc(50% - 220px); width: 217px; top: 80px; }
+  .purpose-grid { gap: 20px; }
+  .purpose-grid > div { align-items: flex-start; gap: 10px; }
+  .purpose-grid strong { font-size: 13px; }
+  .how-card { padding: 24px; }
+  .how-card h3 { font-size: 22px; }
+  .audience-panel { padding: 28px; }
+  .workflow-chips { gap: 6px; flex-wrap: wrap; }
+  .accessibility-grid { gap: 32px; }
+  .preview-record { padding: 20px; }
+  .preview-tabs { gap: 6px; }
+  .marketing-site .preview-tabs button { padding: 8px; font-size: 13px; }
+  .responsible-panel { gap: 32px; }
+  .faq-section { gap: 40px; }
+  .marketing-footer { gap: 24px; }
+}
+@media (max-width: 650px) {
+  .marketing-container, .marketing-nav { width: calc(100% - 40px); }
+  .marketing-section { padding-block: 56px; }
+  .marketing-site h2 { font-size: 32px; }
+  .hero-copy h1 { font-size: 40px; }
+  .hero-copy .marketing-eyebrow { font-size: 10px; letter-spacing: .09em; }
+  .hero-description { font-size: 18px; }
+  .marketing-hero { padding-block: 44px 48px; gap: 32px; }
+  .marketing-actions { gap: 12px; }
+  .marketing-actions .marketing-button { width: 100%; }
+  .hero-languages { gap: 12px; }
+  .hero-languages > span:not(.language-note) { padding-right: 12px; }
+  .hero-languages .language-note { width: 100%; }
+  .hero-illustration { height: 420px; border-radius: 24px; }
+  .illustration-note { left: 20px; top: 24px; font-size: 10px; }
+  .illustration-strip { left: -8px; width: 165px; height: 240px; top: 75px; }
+  .concept-phone { top: 78px; right: 18px; width: 172px; height: 290px; border-width: 5px; border-radius: 24px; }
+  .phone-content { padding: 12px 14px; }
+  .phone-content .medot-logo { font-size: 11px; }
+  .phone-content .medot-logo svg { width: 18px; height: 18px; }
+  .phone-content h3 { font-size: 20px; margin-bottom: 10px; }
+  .phone-label { margin-top: 14px; }
+  .phone-audio { margin-top: 12px; padding: 8px; font-size: 9px; }
+  .phone-detail span { padding: 6px 0; font-size: 8px; }
+  .phone-demo { font-size: 7px; }
+  .illustration-chip { bottom: 50px; left: 16px; font-size: 9px; padding: 8px 12px; }
+  .hero-illustration figcaption { left: 20px; bottom: 20px; font-size: 9px; }
+  .purpose-grid { grid-template-columns: 1fr; gap: 22px; padding-block: 28px; }
+  .purpose-grid > div { gap: 16px; align-items: center; }
+  .purpose-grid strong { font-size: 14px; }
+  .how-grid, .audience-grid, .accessibility-grid, .responsible-panel, .faq-section { grid-template-columns: 1fr; }
+  .how-grid { gap: 16px; }
+  .how-card { padding: 28px; }
+  .how-card h3 { font-size: 25px; }
+  .preparation-note { align-items: flex-start; font-size: 12px; }
+  .audience-section { padding-block: 48px; }
+  .audience-panel { padding: 28px; }
+  .workflow-chips { gap: 8px; }
+  .accessibility-grid { gap: 28px; }
+  .language-preview { padding: 20px; }
+  .preview-tabs { gap: 6px; }
+  .preview-record { padding: 22px; }
+  .preview-record h3 { font-size: 24px; }
+  .marketing-site .preview-record button { font-size: 15px; }
+  .responsible-panel { padding: 28px; gap: 24px; }
+  .responsible-panel h2 { margin-bottom: 0; }
+  .faq-section { gap: 12px; }
+  .final-cta { padding-block: 48px; }
+  .marketing-footer { flex-direction: column; align-items: flex-start; gap: 24px; padding-block: 32px; }
+  .marketing-footer nav { gap: 24px; }
+  .marketing-footer .footer-note { margin: 0; }
+}
+@media (prefers-reduced-motion: reduce) { .marketing-site *, .marketing-site *::before, .marketing-site *::after { transition: none !important; animation: none !important; } }

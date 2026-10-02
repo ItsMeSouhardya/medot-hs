@@ -1,7 +1,7 @@
 :root {
   color-scheme: light;
-  font-family: Arial, Helvetica, sans-serif;
-  color: #17202a;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+  color: #172f2b;
   background: #fff;
 }
 
@@ -10,6 +10,30 @@
 html { font-size: 18px; }
 
 body { margin: 0; }
+
+@font-face {
+  font-family: "MEDOT Bengali";
+  src: url("/fonts/noto-sans-bengali.ttf") format("truetype");
+  font-weight: 100 900;
+  font-display: swap;
+  unicode-range: U+0980-09FF;
+}
+@font-face {
+  font-family: "MEDOT Hindi";
+  src: url("/fonts/noto-sans-devanagari.ttf") format("truetype");
+  font-weight: 100 900;
+  font-display: swap;
+  unicode-range: U+0900-097F, U+A8E0-A8FF;
+}
+:lang(bn) { font-family: "MEDOT Bengali", "Nirmala UI", sans-serif; }
+:lang(hi) { font-family: "MEDOT Hindi", "Nirmala UI", sans-serif; }
+.medot-logo { display: inline-flex; align-items: center; gap: 10px; color: inherit; font-family: var(--font-heading), sans-serif; font-size: 24px; line-height: 1; font-weight: 700; letter-spacing: .035em; }
+.medot-logo > svg { width: 38px; height: 38px; flex-shrink: 0; }
+.medot-logo .medot-logo-type { font: inherit; display: inline; color: inherit; letter-spacing: inherit; margin: 0; }
+.patient-page { width: min(640px, calc(100% - 40px)); font-size: 22px; line-height: 1.6; }
+.patient-page > .medot-logo { color: #215c50; margin-bottom: 24px; }
+.patient-page button { min-height: 64px; }
+.patient-page h1 { font-family: var(--font-heading), sans-serif; }
 
 main {
   width: min(100% - 2rem, 44rem);
