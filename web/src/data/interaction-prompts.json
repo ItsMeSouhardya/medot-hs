@@ -1,0 +1,32 @@
+{
+  "en": {
+    "move-closer": "Move your phone closer to one MEDOT tag.",
+    "mismatch": "This medicine does not match your confirmed selection.",
+    "match": "This medicine matches your confirmed selection.",
+    "expired-match": "Warning. The labelled expiry has passed. This medicine matches your selection. Verify it with a pharmacist.",
+    "unavailable": "This medicine could not be identified. Ask a pharmacist to verify the strip.",
+    "duplicate": "This tag was already scanned.",
+    "multiple-results": "More than one medicine matches. Review each result. MEDOT will not choose one for you.",
+    "scan-finished": "Scanning finished. Review the identified medicine records. Identification does not confirm that medicine was taken."
+  },
+  "bn": {
+    "move-closer": "ফোনটি একটি MEDOT ট্যাগের কাছে আনুন।",
+    "mismatch": "এই ওষুধটি আপনার নিশ্চিত করা নির্বাচনের সঙ্গে মেলে না।",
+    "match": "এই ওষুধটি আপনার নিশ্চিত করা নির্বাচনের সঙ্গে মেলে।",
+    "expired-match": "সতর্কতা। লেবেলে লেখা মেয়াদ শেষ হয়েছে। এই ওষুধটি আপনার নির্বাচনের সঙ্গে মেলে। ফার্মাসিস্টকে দিয়ে যাচাই করুন।",
+    "unavailable": "এই ওষুধটি শনাক্ত করা যায়নি। ফার্মাসিস্টকে দিয়ে স্ট্রিপ যাচাই করুন।",
+    "duplicate": "এই ট্যাগটি আগে স্ক্যান করা হয়েছে।",
+    "multiple-results": "একাধিক ওষুধ মিলে গেছে। প্রতিটি ফলাফল দেখুন। MEDOT আপনার হয়ে একটি বেছে নেবে না।",
+    "scan-finished": "স্ক্যান শেষ হয়েছে। শনাক্ত করা ওষুধের রেকর্ড দেখুন। শনাক্তকরণ ওষুধ খাওয়া নিশ্চিত করে না।"
+  },
+  "hi": {
+    "move-closer": "फोन को एक MEDOT टैग के पास लाएँ।",
+    "mismatch": "यह दवा आपके पुष्टि किए गए चयन से मेल नहीं खाती।",
+    "match": "यह दवा आपके पुष्टि किए गए चयन से मेल खाती है।",
+    "expired-match": "चेतावनी। लेबल की समाप्ति तिथि बीत गई है। यह दवा आपके चयन से मेल खाती है। फार्मासिस्ट से जाँच कराएँ।",
+    "unavailable": "इस दवा की पहचान नहीं हो सकी। फार्मासिस्ट से स्ट्रिप की जाँच कराएँ।",
+    "duplicate": "यह टैग पहले स्कैन किया गया था।",
+    "multiple-results": "एक से अधिक दवाएँ मेल खाती हैं। हर परिणाम देखें। MEDOT आपके लिए एक दवा नहीं चुनेगा।",
+    "scan-finished": "स्कैन पूरा हुआ। पहचानी गई दवा के रिकॉर्ड देखें। पहचान से दवा लेने की पुष्टि नहीं होती।"
+  }
+}

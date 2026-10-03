@@ -1,0 +1,15 @@
+"use client";
+import { useEffect,useState } from "react";
+import Link from "next/link";
+import type { OperatorTag } from "@/lib/operator-tags";
+import { privateRequest,usePrivateResource } from "../caregiver/private-client";
+export default function SharingSetup({tags}:{tags:OperatorTag[]}){
+  const state=usePrivateResource<{id:string;enabled:boolean;count:number}[]>("/api/admin/sharing-groups"),[code,setCode]=useState("");
+  useEffect(()=>{const clear=()=>setCode("");window.addEventListener("blur",clear);document.addEventListener("visibilitychange",clear);return()=>{window.removeEventListener("blur",clear);document.removeEventListener("visibilitychange",clear);};},[]);
+  const create=async(event:React.FormEvent<HTMLFormElement>)=>{event.preventDefault();const form=new FormData(event.currentTarget);setCode("");await state.run(signal=>privateRequest<{ownerCode:string}>("/api/admin/sharing-groups",signal,"POST",{selectedTokens:form.getAll("token"),patientAgreed:form.get("agreement")==="on"}),value=>setCode(value.ownerCode));};
+  return <section className="operator-card sharing-page"><h2>Prepare private owner controls</h2><p>Enroll one to five active strips after the person agrees to setup. Sharing stays off until the owner unlocks controls and opts in. No patient identity is collected.</p><form onSubmit={create}><fieldset disabled={state.busy}><legend>Active strips</legend>{tags.filter(tag=>tag.status==="ACTIVE").map(tag=><label key={tag.token}><input type="checkbox" name="token" value={tag.token}/>{tag.genericName} {tag.strength} · Batch {tag.batchNumber}</label>)}</fieldset><label><input type="checkbox" name="agreement" required/>The person agreed to this private setup.</label><button disabled={state.busy||!tags.some(tag=>tag.status==="ACTIVE")}>Create owner controls</button></form>
+    {state.busy&&<p role="status">Checking private access…</p>}{state.error&&<p role="alert">Setup unavailable. Check active selections, authorization and configuration.</p>}
+    {code&&<section><h3>One-time owner code display</h3><p>Give this private code to the owner securely. It expires in 30 days. Open <Link href="/sharing">owner controls</Link> and enter the code there. Keep the code out of URLs.</p><output className="private-code">{code}</output><button onClick={()=>{setCode("");void state.refresh();}}>Hide code and refresh</button></section>}
+    <h3>Your prepared groups</h3>{state.data?.map((group,index)=><article key={group.id}><p>Group {index+1} · {group.count} enrolled strips · Sharing {group.enabled?"on":"off"}</p><form onSubmit={async event=>{event.preventDefault();setCode("");await state.run(signal=>privateRequest<{ownerCode:string}>(`/api/admin/sharing-groups/${group.id}/rotate-owner`,signal,"POST",{patientAgreed:true}),value=>setCode(value.ownerCode));}}><p>Replacing the owner code turns sharing off, removes caregiver access and deletes this group’s check-ins.</p><label><input type="checkbox" required/>The person agreed to replace their owner code and turn sharing off.</label><button disabled={state.busy}>Replace owner code</button></form></article>)}
+  </section>;
+}

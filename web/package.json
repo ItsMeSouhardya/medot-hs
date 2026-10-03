@@ -9,7 +9,16 @@
     "lint": "eslint",
     "typecheck": "next typegen && tsc --noEmit",
     "test": "vitest run",
-    "db:setup": "node scripts/setup-db.mjs"
+    "db:setup": "node scripts/setup-db.mjs",
+    "config:check": "node scripts/check-configuration.mjs",
+    "speech:check": "node scripts/check-speech-config.mjs",
+    "cues:check": "node scripts/generate-interaction-prompts.mjs --check",
+    "cues:generate": "node scripts/generate-interaction-prompts.mjs --generate",
+    "reminders:dispatch": "node scripts/dispatch-reminders.mjs",
+    "sharing:cleanup": "node scripts/cleanup-sharing.mjs",
+    "release:smoke": "node scripts/m7-production-smoke.mjs",
+    "release:db": "node scripts/release-database-check.mjs",
+    "jobs:configure": "node scripts/configure-free-jobs.mjs"
   },
   "engines": {
     "node": ">=24.18.1 <25"
@@ -21,6 +30,7 @@
     "qrcode": "^1.5.4",
     "react": "19.2.8",
     "react-dom": "19.2.8",
+    "web-push": "3.6.7",
     "zod": "^4.6.5"
   },
   "devDependencies": {
@@ -29,6 +39,7 @@
     "@types/qrcode": "^1.5.6",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "@types/web-push": "3.6.4",
     "eslint": "^9",
     "eslint-config-next": "16.3.6",
     "jsdom": "^30.1.1",

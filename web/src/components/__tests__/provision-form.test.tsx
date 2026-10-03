@@ -49,6 +49,37 @@ it("passes the server-returned URL unchanged to QR and NFC controls", async () =
 const ready = { id: "paracetamol-500", genericName: "Paracetamol", strength: "500 mg", dosageForm: "Tablet", catalogStatus: "DEMO_READY" as const };
 const blocked = { id: "rabijoi-dsr", brandName: "Rabijoi DSR", genericName: "Rabeprazole and Domperidone SR", strength: "Pack check required", dosageForm: "Capsule", catalogStatus: "PACK_CHECK_REQUIRED" as const };
 
+it("offers custom medicine entry alongside selection", () => {
+  render(<ProvisionForm medicines={[ready]} />);
+  fireEvent.click(screen.getByRole("button", { name: "Add medicine" }));
+  expect(screen.getByLabelText("Medicine name")).toBeTruthy();
+  expect(screen.getByRole("button", { name: "Save blocked medicine" })).toBeTruthy();
+});
+
+it("records only selected timing and shows exact catalog notes in physical review", async () => {
+  vi.stubGlobal("fetch", vi.fn(async () => ({ ok: true, json: async () => ({ token: "abcdefghijklmnopqrstuv", url: "https://medot.example/m/abcdefghijklmnopqrstuv" }) })));
+  render(<ProvisionForm medicines={[{ ...ready, infoEn: "Fictional information.", infoBn: "শুধুমাত্র ডেমো।" }]} />);
+  fillManual();
+  fireEvent.click(screen.getByRole("checkbox", { name: "Evening" }));
+  fireEvent.click(screen.getByRole("button", { name: "Review before creating" }));
+  expect(screen.getByText("Fictional information.")).toBeTruthy();
+  expect(screen.getByText("Evening")).toBeTruthy();
+  fireEvent.click(screen.getByRole("checkbox", { name: /I checked the medicine/ }));
+  fireEvent.click(screen.getByRole("button", { name: "Confirm and create pending record" }));
+  await screen.findByTestId("qr-url");
+  expect(JSON.parse(vi.mocked(fetch).mock.calls[0][1]?.body as string).usageSlots).toEqual(["EVENING"]);
+});
+
+it("can recover a saved custom draft for review and disambiguates identical labels", () => {
+  const draft = { ...ready, id: "custom_abcdefghijklmnopqrstuv", catalogStatus: "PACK_CHECK_REQUIRED" as const, recordKind: "FICTIONAL_DEMO" as const };
+  render(<ProvisionForm medicines={[draft, ready, { ...ready, id: "duplicate-label" }]} />);
+  const options = within(screen.getByLabelText("Medicine")).getAllByRole("option");
+  expect(new Set(options.map(o => o.textContent)).size).toBe(options.length);
+  fireEvent.change(screen.getByLabelText("Review a saved custom draft"), { target: { value: draft.id } });
+  expect(screen.getByRole("heading", { name: "Review saved medicine" })).toBeTruthy();
+  expect(screen.queryByRole("button", { name: "Use this medicine" })).toBeNull();
+});
+
 it("disables blocked pack entries and rejects a manipulated selection", () => {
   render(<ProvisionForm medicines={[blocked, ready]} />);
   const selector = screen.getByLabelText("Medicine") as HTMLSelectElement;

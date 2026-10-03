@@ -1,7 +1,7 @@
 import { getPharmacyAccess } from "@/lib/pharmacy-auth";
 import { pharmacyPageDenied } from "@/lib/pharmacy-page-access";
 
-import { getSql } from "@/lib/db";
+import { listMedicines } from "@/lib/medicine-repository";
 import ProvisionForm, { type MedicineOption } from "@/components/provision-form";
 
 export const dynamic = "force-dynamic";
@@ -12,12 +12,7 @@ export default async function NewTagPage() {
 
   let medicines: MedicineOption[];
   try {
-    const sql = getSql();
-    medicines = await sql`
-      SELECT id, generic_name AS "genericName", strength,
-             dosage_form AS "dosageForm", brand_name AS "brandName", catalog_status AS "catalogStatus"
-      FROM medicines ORDER BY generic_name
-    ` as MedicineOption[];
+    medicines = await listMedicines();
   } catch {
     return (
       <main className="operator-page">

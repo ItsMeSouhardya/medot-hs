@@ -21,13 +21,14 @@ describe.skipIf(process.env.MEDOT_RUN_DB_TESTS !== "1")("M3 real Neon persistenc
     created.clear();
   });
 
-  it("has 17 labels and rejects all eight unverified packs through the real repository", async () => {
+  it("preserves all 17 seed identities alongside custom labels and rejects eight unverified packs", async () => {
     for (const medicine of medicineCatalog) {
       expect(await provisionRepository.medicineExists(medicine.id)).toBe(medicine.catalogStatus === "DEMO_READY");
     }
     const sql = getSql();
-    const [{ count }] = await sql`SELECT count(*)::int AS count FROM medicines`;
-    expect(count).toBe(17);
+    const rows = await sql`SELECT id, generic_name, strength, dosage_form FROM medicines
+      WHERE id IN (SELECT jsonb_array_elements_text(${JSON.stringify(medicineCatalog.map(item => item.id))}::jsonb)) ORDER BY id`;
+    expect(rows).toEqual(medicineCatalog.map(item => ({ id: item.id, generic_name: item.genericName, strength: item.strength, dosage_form: item.dosageForm })).sort((a, b) => a.id.localeCompare(b.id)));
   }, 30000);
 
   it("persists exact multilingual text/creator on a pending fixture and keeps it nonpublic", async () => {

@@ -9,6 +9,8 @@ import { POST as activateTagRoute } from "../../app/api/admin/tags/[token]/activ
 import { POST as revokeTagRoute } from "../../app/api/admin/tags/[token]/revoke/route";
 import { POST as oldLogin } from "../../app/api/admin/login/route";
 import { GET as listMedicines } from "../../app/api/admin/medicines/route";
+import { POST as addMedicine } from "../../app/api/admin/medicines/route";
+import { POST as reviewMedicineRoute } from "../../app/api/admin/medicines/[id]/review/route";
 
 vi.mock("@/lib/pharmacy-auth", async (importOriginal) => ({
   ...await importOriginal<typeof import("../pharmacy-auth")>(), getPharmacyAccess: vi.fn(),
@@ -30,7 +32,39 @@ const mutationRoutes = [
   () => createTag(request("/api/admin/tags")),
   () => activateTagRoute(request("/api/admin/tags/" + token + "/activate"), context),
   () => revokeTagRoute(request("/api/admin/tags/" + token + "/revoke"), context),
+  () => addMedicine(request("/api/admin/medicines")),
+  () => reviewMedicineRoute(request("/api/admin/medicines/custom_fixture/review"), { params: Promise.resolve({ id: "custom_fixture" }) }),
 ];
+it("custom catalog creation denies unauthenticated and foreign-origin requests before SQL", async () => {
+  const invoke = (origin: string) => addMedicine(request("/api/admin/medicines", origin));
+  expect((await invoke("https://medot.example")).status).toBe(401);
+  vi.mocked(getPharmacyAccess).mockResolvedValue({ kind: "authorized", userId: "user_team_one" });
+  expect((await invoke("https://foreign.example")).status).toBe(403);
+  expect(getSql).not.toHaveBeenCalled();
+});
+it("catalog review rejects a foreign origin before reading any row", async () => {
+  vi.mocked(getPharmacyAccess).mockResolvedValue({ kind: "authorized", userId: "user_team_one" });
+  const response = await reviewMedicineRoute(request("/review", "https://foreign.example"), { params: Promise.resolve({ id: "custom_fixture" }) });
+  expect(response.status).toBe(403);
+  expect(getSql).not.toHaveBeenCalled();
+});
+it.each(["not-json", "null", '{"catalogStatus":"DEMO_READY","createdBy":"forged"}'])("catalog writes reject malformed or forged data before SQL: %s", async body => {
+  vi.mocked(getPharmacyAccess).mockResolvedValue({ kind: "authorized", userId: "user_team_one" });
+  const create = await addMedicine(request("/medicines", "https://medot.example", undefined, body));
+  const review = await reviewMedicineRoute(request("/review", "https://medot.example", undefined, body), { params: Promise.resolve({ id: "custom_fixture" }) });
+  for (const response of [create, review]) {
+    expect(response.status).toBe(400);
+    expect(response.headers.get("cache-control")).toContain("no-store");
+  }
+  expect(getSql).not.toHaveBeenCalled();
+});
+it("catalog database failure withholds private diagnostics", async () => {
+  vi.mocked(getPharmacyAccess).mockResolvedValue({ kind: "authorized", userId: "user_team_one" });
+  vi.mocked(getSql).mockImplementationOnce(() => { throw new Error("Private database credentials"); });
+  const response = await addMedicine(request("/medicines", "https://medot.example", undefined, JSON.stringify({ requestId: "11111111-1111-4111-8111-111111111111", genericName: "Fictional label", strength: "Fixture", dosageForm: "Fixture", recordKind: "FICTIONAL_DEMO" })));
+  expect(response.status).toBe(503);
+  expect(await response.json()).toEqual({ error: "UNAVAILABLE" });
+});
 beforeEach(() => {
   vi.stubEnv("APP_ORIGIN", "https://medot.example");
   vi.stubEnv("SESSION_SECRET", secret);

@@ -8,7 +8,7 @@ const token = "abcdefghijklmnopqrstuv";
 const record = { token, genericName: "Fresh demo label", strength: "Demo strength", dosageForm: "Demo form", batchNumber: "SOFTWARE-ONLY", expiryMonth: "2028-12", instruction: "Software demonstration only." };
 const speak = vi.fn(), cancel = vi.fn();
 const response = (body: unknown, status = 200) => ({ ok: status === 200, json: async () => body });
-const mount = () => render(<ReadAloud {...{ token, text: "OLD CACHED IDENTITY" }} />);
+const mount = () => render(<ReadAloud token={token} initialVoice="device" />);
 beforeEach(() => {
   vi.stubGlobal("speechSynthesis", { speak, cancel });
   vi.stubGlobal("SpeechSynthesisUtterance", class { text: string; constructor(text: string) { this.text = text; } });
@@ -33,7 +33,7 @@ it.each(["unknown", "pending", "revoked", "unavailable"])("never speaks stale te
   expect(speak).not.toHaveBeenCalled();
 });
 it("uses the current expiry warning at the start of spoken text", async () => {
-  vi.mocked(fetch).mockResolvedValue(response({ kind: "active", record, expiryState: "EXPIRED" }) as Response);
+  vi.mocked(fetch).mockResolvedValue(response({ kind: "active", record: { ...record, expiryMonth: "2000-01" }, expiryState: "EXPIRED" }) as Response);
   mount(); fireEvent.click(screen.getByRole("button", { name: "Read medicine aloud" }));
   await waitFor(() => expect(speak).toHaveBeenCalledOnce());
   expect(speak.mock.calls[0][0].text).toMatch(/^Warning\./);

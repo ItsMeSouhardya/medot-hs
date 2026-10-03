@@ -1,0 +1,18 @@
+{
+  "approvedAt": "2026-10-03",
+  "authority": "User approved all remaining interface wording in the implementation request.",
+  "languages": [
+    "en",
+    "bn",
+    "hi"
+  ],
+  "scope": "Finder, Detective, sharing/check-in and reminder interface text only. Excludes medicine instructions, physical verification and pronunciation.",
+  "sourceHashes": {
+    "web/src/lib/i18n/en.ts": "f2d0300a0f48fb24106721f85c792193ea32d5e14c40a462409fbf454df5b05e",
+    "web/src/lib/i18n/bn.ts": "2223d9f2ab5778d70ec6134b2026926511643129f581848ff77252b212090bfc",
+    "web/src/lib/i18n/hi.ts": "d0aec314f99565217dab25b928ab7cc8cf056048cf671dd2dc823bb03697f075",
+    "web/src/lib/reminders/copy.ts": "52b8d37faacb69b0d356b43e55c5ef9afc776c64d881152356d88f05494fe85f",
+    "web/src/lib/reminders/domain.ts": "e0fdea989f91522c13b1c15be71041ba07a45513de0e067d1e56f3641c70400a",
+    "web/public/sw.js": "5fd863d81d4fc8b5b16eb9442d77cffd99e28b7c7ae7a85a1802d8fe6fc417da"
+  }
+}

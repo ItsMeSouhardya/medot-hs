@@ -6,11 +6,11 @@ import proxy, { config } from "../../proxy";
 const { initializeSession } = vi.hoisted(() => ({ initializeSession: vi.fn() }));
 vi.mock("@clerk/nextjs/server", () => ({ clerkMiddleware: () => initializeSession }));
 afterEach(() => { vi.unstubAllEnvs(); vi.clearAllMocks(); });
-it("initializes Clerk only for pharmacy, sign-in and admin APIs", () => {
-  for (const url of ["/pharmacy", "/pharmacy/provision", "/pharmacy/tags", "/sign-in", "/sign-in/factor-one", "/api/admin/medicines", "/api/admin/tags/a/activate"]) {
+it("initializes Clerk only for pharmacy/caregiver protected surfaces", () => {
+  for (const url of ["/pharmacy", "/pharmacy/provision", "/pharmacy/tags", "/sign-in", "/sign-in/factor-one", "/api/admin/medicines", "/api/admin/tags/a/activate", "/caregiver", "/caregiver/sign-in", "/api/caregiver/groups", "/api/caregiver/redeem"]) {
     expect(doesProxyMatch({ config, nextConfig: {}, url })).toBe(true);
   }
-  for (const url of ["/", "/m/abcdefghijklmnopqrstuv", "/api/live", "/api/health", "/api/public/tags/abcdefghijklmnopqrstuv", "/api/public/tags/a/speech", "/admin", "/_next/static/app.js"]) {
+  for (const url of ["/", "/m/abcdefghijklmnopqrstuv", "/find", "/detective", "/sharing", "/api/sharing/consent", "/api/sharing/check-ins", "/api/live", "/api/health", "/api/public/tags/abcdefghijklmnopqrstuv", "/api/public/tags/a/speech", "/admin", "/_next/static/app.js"]) {
     expect(doesProxyMatch({ config, nextConfig: {}, url })).toBe(false);
   }
 });

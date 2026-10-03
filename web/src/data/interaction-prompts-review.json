@@ -1,0 +1,8 @@
+{
+  "note": "Human language review only. Leave null until the exact fixed scripts have been checked. Reviewed hashes bind approval to script content; this does not assert clinical validation or device pronunciation.",
+  "reviews": {
+    "en": { "scriptHash": "99ce6b9ac70d7a439a2cec3a312f74fd07cb71c9e935be11bc5a267ccc97f832", "reviewedAt": "2026-10-02T19:43:17Z" },
+    "bn": { "scriptHash": "078ae833b06f36604fd4808fc81bb66088a7ed0fa1f0679e37b29219e4a70238", "reviewedAt": "2026-10-02T19:43:17Z" },
+    "hi": { "scriptHash": "d9815f4db3aa0a39d48902865849b36c3940f0cfbab034bf85050899f094ae0b", "reviewedAt": "2026-10-02T19:43:17Z" }
+  }
+}

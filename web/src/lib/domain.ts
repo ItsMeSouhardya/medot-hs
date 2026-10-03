@@ -1,5 +1,7 @@
 import { randomBytes } from "node:crypto";
 import { z } from "zod";
+import { usageSlots } from "./usage-slots";
+export type { UsageSlot } from "./usage-slots";
 
 const tokenPattern = /^[A-Za-z0-9_-]{22}$/;
 const expiryMonthPattern = /^([0-9]{4})-(0[1-9]|1[0-2])$/;
@@ -11,6 +13,7 @@ export const provisionInputSchema = z.object({
   instruction: z.string().trim().min(1).max(500),
   instructionBn: z.string().trim().min(1).max(500),
   instructionHi: z.string().trim().min(1).max(500).optional(),
+  usageSlots: z.array(z.enum(usageSlots)).max(5).refine(slots => new Set(slots).size === slots.length, "Usage slots must be distinct").default([]),
 });
 
 export type ProvisionInput = z.infer<typeof provisionInputSchema>;
@@ -37,17 +40,4 @@ export function buildTagUrl(token: string, origin: string): string {
   return new URL("/m/" + token, base).toString();
 }
 
-export function expiryState(month: string, now: Date = new Date()): ExpiryState {
-  const match = expiryMonthPattern.exec(month);
-  if (!match) throw new Error("Invalid expiry month");
-  const expiryValue = Number(match[1]) * 12 + Number(match[2]);
-  const parts = new Intl.DateTimeFormat("en-US", {
-    timeZone: "Asia/Kolkata",
-    year: "numeric",
-    month: "2-digit",
-  }).formatToParts(now);
-  const year = Number(parts.find((part) => part.type === "year")?.value);
-  const currentMonth = Number(parts.find((part) => part.type === "month")?.value);
-  const currentValue = year * 12 + currentMonth;
-  return currentValue > expiryValue ? "EXPIRED" : "CURRENT";
-}
+export { expiryState } from "./expiry";

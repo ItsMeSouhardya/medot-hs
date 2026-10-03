@@ -1,4 +1,4 @@
-# M2 authentication baseline; add ElevenLabs settings at M4.
+# Pharmacy authentication and server-owned multilingual speech.
 services:
   - type: web
     name: medot-hs
@@ -27,3 +27,27 @@ services:
         value: /sign-in
       - key: NEXT_PUBLIC_CLERK_SIGN_IN_FALLBACK_REDIRECT_URL
         value: /pharmacy
+      - key: ELEVENLABS_API_KEY
+        sync: false
+      - key: ELEVENLABS_MODEL_ID
+        value: eleven_v3
+      - key: ELEVENLABS_VOICE_ID_EN
+        sync: false
+      - key: ELEVENLABS_VOICE_ID_BN
+        sync: false
+      - key: ELEVENLABS_VOICE_ID_HI
+        sync: false
+      - key: ELEVENLABS_MAX_GENERATIONS_PER_DAY
+        value: "100"
+      - key: FIND_DEMO_TOKENS
+        sync: false
+      - key: SHARING_RATE_LIMIT_SECRET
+        sync: false
+      - key: VAPID_PUBLIC_KEY
+        sync: false
+      - key: VAPID_PRIVATE_KEY
+        sync: false
+      - key: VAPID_SUBJECT
+        value: https://github.com/ItsMeSouhardya/medot-hs
+      - key: REMINDER_CRON_SECRET
+        sync: false

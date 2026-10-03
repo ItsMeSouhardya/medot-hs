@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useRef, useState } from "react";
 import MedotLogo from "../brand/medot-logo";
 import Icon from "./icon";
-import { repositoryUrl } from "./site-links";
+import { caregiverUrl, detectiveUrl, finderUrl, repositoryUrl, sharingUrl, remindersUrl } from "./site-links";
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
@@ -38,12 +38,13 @@ export default function Navbar() {
           <Icon name={open ? "close" : "menu"} /> {open ? "Close" : "Menu"}
         </button>
         <div id="marketing-links" className={`marketing-links ${open ? "is-open" : ""}`}>
+          <Link href={finderUrl} onClick={closeDestination}>Find my medicine</Link>
           <a href="#how-it-works" onClick={closeDestination}>How it works</a>
           <a href="#accessibility" onClick={closeDestination}>Accessibility</a>
           <a href="#for-pharmacies" onClick={closeDestination}>For pharmacies</a>
           <details className="marketing-dropdown">
             <summary>Resources <Icon name="chevron" /></summary>
-            <div><a href="#faq" onClick={closeDestination}>Frequently asked questions</a><a href={repositoryUrl} onClick={closeDestination}>GitHub repository</a></div>
+            <div><Link href={remindersUrl} onClick={closeDestination}>Medicine reminders</Link><Link href={detectiveUrl} onClick={closeDestination}>Medication Detective</Link><Link href={sharingUrl} onClick={closeDestination}>Private sharing controls</Link><Link href={caregiverUrl} onClick={closeDestination}>Caregiver dashboard</Link><a href="#faq" onClick={closeDestination}>Frequently asked questions</a><a href={repositoryUrl} onClick={closeDestination}>GitHub repository</a></div>
           </details>
           <details className="marketing-dropdown">
             <summary>Language preview <Icon name="chevron" /></summary>

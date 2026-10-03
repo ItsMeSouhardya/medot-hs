@@ -1,5 +1,6 @@
-export default function Icon({ name, className }: { name: "arrow" | "sound" | "touch" | "scan" | "check" | "menu" | "close" | "chevron"; className?: string }) {
+export default function Icon({ name, className }: { name: "arrow" | "sound" | "touch" | "scan" | "check" | "menu" | "close" | "chevron" | "bell"; className?: string }) {
   const paths = {
+    bell: "M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9M9 21h6",
     arrow: "M4 12h16m-6-6 6 6-6 6",
     sound: "m11 4-6 5H2v6h3l6 5V4m4 4c3 2 3 6 0 8m3-11c5 4 5 10 0 14",
     touch: "M8 13V6a2 2 0 0 1 4 0v6m0-2 4 1 3 3v4l-3 4H9l-5-7a2 2 0 0 1 3-2l2 2",
