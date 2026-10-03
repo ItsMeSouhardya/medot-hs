@@ -166,7 +166,10 @@ ol { padding-left: 1.5rem; }
 .reminder-help { padding:20px; border:1px solid var(--border); border-radius:16px; margin-top:32px; }
 .reminder-help summary { cursor:pointer; min-height:48px; }
 .operator-page:not(.pharmacy-shell .operator-page) { width:min(760px,calc(100% - 40px)); padding-block:48px 64px; }
-.medot-auth-card { max-width:100%; }
+/* Clerk's rem-sized root otherwise grows past a mobile patient-width page. */
+.operator-page .cl-rootBox { width:100%; max-width:450px; min-width:0; }
+.operator-page .medot-auth-card { width:100%; max-width:100%; min-width:0; }
+.operator-page .cl-card { width:100%; max-width:100%; min-width:0; padding-inline:clamp(16px,5vw,40px); }
 .patient-page :is(h1,h2,h3):lang(bn),.pharmacy-shell :is(h1,h2,h3):lang(bn) { font-family:"MEDOT Bengali","Nirmala UI",sans-serif;letter-spacing:normal; }
 .patient-page :is(h1,h2,h3):lang(hi),.pharmacy-shell :is(h1,h2,h3):lang(hi) { font-family:"MEDOT Hindi","Nirmala UI",sans-serif;letter-spacing:normal; }
 @media(max-width:480px) { .sharing-page form,.sharing-page article,.reminder-consent { padding:20px; } .patient-page { padding-top:24px; } .reminder-actions > * { width:100%; margin-right:0; } }

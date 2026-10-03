@@ -6,6 +6,10 @@ A tactile NFC clip connects a medicine strip to an accessible, spoken digital re
 
 **Stack:** Next.js 16.3.6, React 19.2.8, TypeScript, Neon Postgres, Clerk 7.9.10, ElevenLabs and Web Push. The source prototype remains preserved in the sibling `medot-base/medot-v0/web` checkout.
 
+[Open the deployed app](https://medot-hs.onrender.com/)
+
+![Deployed MEDOT homepage](assets/homepage.jpg)
+
 ## Features
 
 | Area | Implemented behavior |
@@ -126,10 +130,10 @@ Sharing access enforces expiry immediately; the daily job deletes retained expir
 
 ## Release status
 
-All five feature phases plus UI/reminders are implemented locally. Remaining observed release gates are tracked honestly:
+All five feature phases plus UI/reminders are implemented and deployed at https://medot-hs.onrender.com/. The release checks passed 356 default tests and all 27 separately enabled Neon fixtures, with lint/types/build and 106 local production checks in both configured and missing-server-Clerk modes. Both free scheduler jobs have recorded HTTP 200 executions. This demonstrates scheduler execution, not delivery to a consenting phone.
 
 - ElevenLabs voice/model lookups succeed, but synthesis returned **402 payment_required** on 03 October 2026. Fix account entitlement before claiming online speech/cue assets ready; explicit supported device speech remains available.
-- Deployment/redeployment, free scheduled-job execution and consenting phone notification delivery require actual results.
+- Real closed-app notification delivery remains a consenting phone check. Reminder dispatch has no enrolled device until the user explicitly enables it.
 - Real allowed/outsider pharmacy and invited caregiver sessions, printed pack checks, two-tag NFC/QR equality, TalkBack, native 200% zoom and EN/BN pronunciation require account/device evidence.
 - English/Bengali/Hindi interface copy is user approved. This does not approve clinical instructions or certify physical medicines.
 
