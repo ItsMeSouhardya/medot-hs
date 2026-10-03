@@ -8,7 +8,7 @@ const active = { kind: "active" as const, record };
 const response = (body: unknown, status = 200) => new Response(JSON.stringify(body), { status, headers: { "Content-Type": "application/json" } });
 beforeEach(() => vi.stubGlobal("fetch", vi.fn(async (url:string) => url.startsWith("/api/sharing/")?response({error:"DENIED"},403):response({ ...active, expiryState: "CURRENT" }))));
 afterEach(() => { cleanup(); vi.unstubAllGlobals(); });
-it("localizes patient details without translating the stored instruction or starting speech", async () => {
+it("localizes patient details without translating the stored instruction when speech is unavailable", async () => {
   const synthesize = vi.fn(); vi.stubGlobal("speechSynthesis", { cancel: vi.fn(), speak: synthesize });
   render(<PatientView token={token} initialLookup={active} initialLanguage="en" />);
   await waitFor(() => expect(vi.mocked(fetch).mock.calls.filter(call=>String(call[0]).startsWith("/api/public/"))).toHaveLength(1));

@@ -82,12 +82,13 @@ it("missing Bengali device voice offers explicit English; it never speaks Bengal
   await waitFor(() => expect(speak).toHaveBeenCalledOnce());
   expect(speak.mock.calls[0][0].lang).toBe("en-IN"); expect(speak.mock.calls[0][0].text).toContain(record.instruction);
 });
-it("refuses an English reading when the listed device voices support only another language", async () => {
+it("uses OS English resolution without assigning a listed Bengali voice", async () => {
   vi.stubGlobal("speechSynthesis", { cancel, speak, getVoices: () => [{ lang: "bn-IN" }] });
   render(<ReadAloud token={token} initialVoice="device" />);
   fireEvent.click(screen.getByRole("button", { name: "Read medicine aloud" }));
-  await waitFor(() => expect(screen.getByText(/^A device voice for this language is unavailable\./)).toBeTruthy());
-  expect(speak).not.toHaveBeenCalled();
+  await waitFor(() => expect(speak).toHaveBeenCalledOnce());
+  expect(speak.mock.calls[0][0].lang).toBe("en-IN");
+  expect(speak.mock.calls[0][0].voice).toBeUndefined();
 });
 it("page hide releases prepared provider audio and prevents a later play gesture", async () => {
   play.mockRejectedValueOnce(new Error("Autoplay"));

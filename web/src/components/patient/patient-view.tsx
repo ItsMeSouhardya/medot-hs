@@ -17,6 +17,7 @@ export type PatientLookup = TagLookup | { kind: "unavailable" };
 export default function PatientView({ token, initialLookup, initialLanguage }: { token: string; initialLookup: PatientLookup; initialLanguage: Language }) {
   const [language, setLanguage] = useState(initialLanguage), [lookup, setLookup] = useState(initialLookup);
   const [checking, setChecking] = useState(true), [revision, setRevision] = useState(0);
+  const [autoReadKey, setAutoReadKey] = useState("");
   const controller = useRef<AbortController | null>(null), generation = useRef(0), title = useRef<HTMLHeadingElement>(null);
   const timer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined), needsFocus = useRef(false);
   const copy = dictionaries[language];
@@ -67,7 +68,7 @@ export default function PatientView({ token, initialLookup, initialLanguage }: {
     <h1 ref={title} tabIndex={-1}>{record.genericName}</h1>{record.brandName && <p>{record.brandName}</p>}<p className="strength">{record.strength} · {record.dosageForm}</p>
     {instruction.usedFallback && <p role="note">{copy.instructionFallback}</p>}
     {checking && <p role="status">{copy.checkRecord}</p>}
-    <ReadAloud key={`${token}:${language}:${revision}`} token={token} language={language} disabled={checking} onRecord={fresh => setLookup({ kind: "active", record: fresh })} onInvalid={invalid} />
+    <ReadAloud key={`${token}:${language}:${revision}`} token={token} language={language} disabled={checking} autoRead={autoReadKey !== `${token}:${language}`} autoCommands onAutoRead={() => setAutoReadKey(`${token}:${language}`)} onRecord={fresh => setLookup({ kind: "active", record: fresh })} onInvalid={invalid} />
     <dl><div><dt>{copy.batch}</dt><dd>{record.batchNumber}</dd></div><div><dt>{copy.labelledExpiry}</dt><dd>{formatExpiryMonth(record.expiryMonth, language)}</dd></div><div><dt>{copy.recordedInstruction}</dt><dd lang={instruction.language}>{instruction.text}</dd></div></dl>
     <MedicineTwin record={record} language={language} /><RecordTimeline record={record} language={language} />
     {!checking&&<ShareIdentification key={`sharing:${token}:${language}:${revision}`} token={token} language={language}/>}
