@@ -76,8 +76,9 @@ it("checks again before a repeat and refuses a subsequently revoked record", asy
 it("page hide cancels playback and old utterance callbacks cannot change the stopped status", async () => {
   mount(); fireEvent.click(screen.getByRole("button", { name: "Read medicine aloud" }));
   await waitFor(() => expect(speak).toHaveBeenCalledOnce());
+  const lateEnd = speak.mock.calls[0][0].onend;
   fireEvent(window, new Event("pagehide"));
-  speak.mock.calls[0][0].onend();
+  lateEnd();
   expect(screen.getByText("Reading stopped.")).toBeTruthy();
   expect(screen.queryByRole("button", { name: "Stop reading" })).toBeNull();
 });
@@ -92,11 +93,11 @@ it("a timeout aborts the request and cannot start late speech", async () => {
   await act(async () => { finish(response({ kind: "active", record, expiryState: "CURRENT" }) as Response); });
   expect(speak).not.toHaveBeenCalled();
 });
-it("a missing speech engine leaves text usable and does not query or synthesize", () => {
+it("a missing speech engine leaves text usable but still verifies the current record", async () => {
   vi.stubGlobal("SpeechSynthesisUtterance", undefined);
   mount(); fireEvent.click(screen.getByRole("button", { name: "Read medicine aloud" }));
-  expect(screen.getByRole("status").textContent).toContain("Use your screen reader");
-  expect(fetch).not.toHaveBeenCalled(); expect(speak).not.toHaveBeenCalled();
+  await waitFor(() => expect(screen.getByRole("status").textContent).toContain("Use your screen reader"));
+  expect(fetch).toHaveBeenCalledOnce(); expect(speak).not.toHaveBeenCalled();
 });
 it("a failed lookup leaves a retry action without speaking cached details", async () => {
   vi.mocked(fetch).mockRejectedValue(new Error("offline"));

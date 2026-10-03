@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import { dictionaries, type Language } from "@/lib/i18n";
 import { parseVoiceCommand, type VoiceCommand } from "@/lib/voice/commands";
 import { recognitionAvailable, startRecognition } from "@/lib/voice/recognition";
-export default function VoiceControls({ language, busy, disabled = false, onCommand }: { language: Language; busy: boolean; disabled?: boolean; onCommand(command: VoiceCommand): void }) {
+export default function VoiceControls({ language, busy, disabled = false, onListen, onCommand }: { language: Language; busy: boolean; disabled?: boolean; onListen?(): void; onCommand(command: VoiceCommand): void }) {
   const copy = dictionaries[language];
   const [listening, setListening] = useState(false), [status, setStatus] = useState("");
   const stop = useRef<(() => void) | null>(null);
@@ -20,13 +20,14 @@ export default function VoiceControls({ language, busy, disabled = false, onComm
   function listen() {
     if (busy || listening) return;
     if (!recognitionAvailable()) { setStatus(copy.recognitionUnavailable); return; }
+    onListen?.();
     const current = ++generation.current;
     setListening(true); setStatus(copy.listening);
     stop.current = startRecognition(language, text => {
       if (current !== generation.current) return;
       const parsed = parseVoiceCommand(text, language);
       if (parsed) { setStatus(""); command(parsed); } else setStatus(copy.commandUnknown);
-    }, () => { if (current === generation.current) setListening(false); }, () => { if (current === generation.current) setStatus(copy.recognitionFailed); });
+    }, () => { if (current === generation.current) { setListening(false); setStatus(""); } }, () => { if (current === generation.current) setStatus(copy.recognitionFailed); });
   }
   return <section className="voice-controls" aria-label={copy.voiceGuidance}>
     <button type="button" disabled={disabled} onClick={() => command("REPEAT")}>{copy.voiceGuidance}</button>

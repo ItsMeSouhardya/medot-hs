@@ -23,7 +23,7 @@ export default function FindMedicine({initialTargets=[],initialLanguage="en"}:{i
   const [selection,setSelection]=useState<FindTarget|null>(null),[confirmed,setConfirmed]=useState<FindTarget|null>(null),[reference,setReference]=useState(false);
   const [result,setResult]=useState<Result|null>(null),[checking,setChecking]=useState(false),[cannotIdentify,setCannotIdentify]=useState(false),[message,setMessage]=useState("");
   const [session,setSession]=useState(0),[listening,setListening]=useState(false);
-  const [guided,setGuided]=useState(false),[announcement,setAnnouncement]=useState(0),[voiceMode,setVoiceMode]=useState<"online"|"device">("online");
+  const [guided,setGuided]=useState(false),[announcement,setAnnouncement]=useState(0),[voiceMode,setVoiceMode]=useState<"online"|"device">("device");
   const speechControl=useRef<ReadAloudHandle|null>(null);
   const request=useRef<AbortController|null>(null),generation=useRef(0),timer=useRef<ReturnType<typeof setTimeout>|undefined>(undefined);
   const stopRecognition=useRef<(()=>void)|null>(null),voiceGeneration=useRef(0),resultTitle=useRef<HTMLHeadingElement>(null);
@@ -35,7 +35,7 @@ export default function FindMedicine({initialTargets=[],initialLanguage="en"}:{i
   const reset=useCallback((keepReferences=false)=>{
     clearResult();cancelRecognition();setListening(false);
     setSelection(null);setConfirmed(null);setReference(false);setMessage("");if(!keepReferences)setReferences([]);setSession(value=>value+1);
-    setGuided(false);setAnnouncement(0);setVoiceMode("online");
+    setGuided(false);setAnnouncement(0);setVoiceMode("device");
   },[clearResult,cancelRecognition]);
   useEffect(()=>{
     const controller=new AbortController();

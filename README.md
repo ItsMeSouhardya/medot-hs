@@ -16,7 +16,7 @@ A tactile NFC clip connects a medicine strip to an accessible, spoken digital re
 | --- | --- |
 | Pharmacy | Authorized sign-in, searchable catalog, custom medicine entry and review, NFC writing and matching QR, readback, activation and revocation |
 | Medicine twin | Identity, printed batch/expiry, reviewed instructions, pairing verification and lifecycle timeline |
-| Accessible reader | English/Bengali/Hindi controls, warning before identity, large controls, transcript, explicit online/device speech, Repeat/Stop and voice commands |
+| Accessible reader | English/Bengali/Hindi controls, warning before identity, large controls, transcript, browser speech by default, automatic online-voice fallback, Repeat/Stop and microphone commands |
 | Find my medicine | Confirm an exact medicine or recorded timing, scan candidates and receive match/mismatch feedback |
 | Medication Detective | Collect up to five strips, explicitly finish, see all recorded matches and retap an exact selected strip |
 | Caregiver sharing | Owner consent, scoped invitations, authenticated caregiver dashboard, optional manual identification check-ins and revocation |
@@ -130,9 +130,10 @@ Sharing access enforces expiry immediately; the daily job deletes retained expir
 
 ## Release status
 
-All five feature phases plus UI/reminders are implemented and deployed at https://medot-hs.onrender.com/. The release checks passed 356 default tests and all 27 separately enabled Neon fixtures, with lint/types/build and 106 local production checks in both configured and missing-server-Clerk modes. Both free scheduler jobs have recorded HTTP 200 executions. This demonstrates scheduler execution, not delivery to a consenting phone.
+All five feature phases plus UI/reminders are implemented and deployed at https://medot-hs.onrender.com/. The speech repair passed 373 default tests, lint/types/build and the configured local production smoke. The 27 opt-in Neon cases passed separately in the earlier release; the speech repair changes no database schema. Both free scheduler jobs have recorded HTTP 200 executions. This demonstrates scheduler execution, not delivery to a consenting phone.
 
-- ElevenLabs voice/model lookups succeed, but synthesis returned **402 payment_required** on 03 October 2026. Fix account entitlement before claiming online speech/cue assets ready; explicit supported device speech remains available.
+- ElevenLabs voice/model lookups succeed, but synthesis returned **402 payment_required** on 03 October 2026. Read aloud uses the browser's normal speech API by default. Selecting online voice still tries ElevenLabs and automatically falls back to a freshly verified browser reading on provider/network failure. Fix account entitlement before claiming online speech/cue assets ready.
+- Press **Listen for a command** to interrupt reading and use normal browser recognition for Repeat, More information, expiry, instructions or Stop. English also accepts phrases such as “Read aloud”, “Tell me more” and “Read instructions please”. Microphone access starts only on that action and lasts at most ten seconds. Allow microphone access in a supporting browser; browser recognition may use an external service. Missing Bengali/Hindi device voices still offer stored English explicitly; MEDOT does not translate instructions. Buttons remain available without microphone support.
 - Real closed-app notification delivery remains a consenting phone check. Reminder dispatch has no enrolled device until the user explicitly enables it.
 - Real allowed/outsider pharmacy and invited caregiver sessions, printed pack checks, two-tag NFC/QR equality, TalkBack, native 200% zoom and EN/BN pronunciation require account/device evidence.
 - English/Bengali/Hindi interface copy is user approved. This does not approve clinical instructions or certify physical medicines.

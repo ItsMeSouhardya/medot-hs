@@ -15,6 +15,20 @@ function recognition() {
   vi.stubGlobal("SpeechRecognition", Fake);
   return { instances, start, abort };
 }
+it("recognition ending without a result clears the listening indicator", () => {
+  const f = recognition(); render(<VoiceControls language="en" busy={false} onCommand={vi.fn()} />);
+  fireEvent.click(screen.getByRole("button", { name: "Listen for a command" }));
+  act(() => f.instances[0].onend?.());
+  expect(screen.queryByText(dictionaries.en.listening)).toBeNull();
+  expect(screen.getByRole("button", { name: "Listen for a command" }).hasAttribute("disabled")).toBe(false);
+});
+it("a browser recognition constructor failure leaves the controls usable", () => {
+  vi.stubGlobal("SpeechRecognition", class { constructor() { throw new Error("Recognition service disabled"); } });
+  render(<VoiceControls language="en" busy={false} onCommand={vi.fn()} />);
+  fireEvent.click(screen.getByRole("button", { name: "Listen for a command" }));
+  expect(screen.getByText(dictionaries.en.recognitionFailed)).toBeTruthy();
+  expect(screen.getByRole("button", { name: "Listen for a command" }).hasAttribute("disabled")).toBe(false);
+});
 it("buttons remain useful without recognition and loading never starts the microphone", () => {
   const f = recognition(), command = vi.fn(); render(<VoiceControls language="en" busy={false} onCommand={command} />);
   expect(f.start).not.toHaveBeenCalled();

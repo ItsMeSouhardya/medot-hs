@@ -23,7 +23,7 @@ export default function MedicationDetective({initialLanguage="en"}:{initialLangu
   const [entries,setEntries]=useState<Entry[]>([]),[summary,setSummary]=useState<Summary|null>(null),[finished,setFinished]=useState(false);
   const [checking,setChecking]=useState(false),[finishing,setFinishing]=useState(false),[message,setMessage]=useState("");
   const [locating,setLocating]=useState<string|null>(null),[located,setLocated]=useState<boolean|null>(null);
-  const [readingRecord,setReadingRecord]=useState<PublicRecord|null>(null),[voiceMode,setVoiceMode]=useState<"online"|"device">("online"),[guided,setGuided]=useState(false);
+  const [readingRecord,setReadingRecord]=useState<PublicRecord|null>(null),[voiceMode,setVoiceMode]=useState<"online"|"device">("device"),[guided,setGuided]=useState(false);
   const [speechRequest,setSpeechRequest]=useState(0),[resultEpoch,setResultEpoch]=useState(0),[session,setSession]=useState(0),[listening,setListening]=useState(false);
   const entryRef=useRef<Entry[]>([]),generation=useRef(0),controller=useRef<AbortController|null>(null),timer=useRef<ReturnType<typeof setTimeout>|undefined>(undefined);
   const voiceGeneration=useRef(0),stopRecognition=useRef<(()=>void)|null>(null),speechControl=useRef<ReadAloudHandle|null>(null),resultTitle=useRef<HTMLHeadingElement>(null);
@@ -34,7 +34,7 @@ export default function MedicationDetective({initialLanguage="en"}:{initialLangu
   const begin=useCallback(()=>{cancel();setReadingRecord(null);setSpeechRequest(0);setSummary(null);setLocated(null);setChecking(false);setMessage("");},[cancel]);
   const reset=useCallback(()=>{
     begin();cancelVoice();putEntries([]);setSelection(null);setConfirmed(null);setFinished(false);setFinishing(false);setLocating(null);setListening(false);
-    setVoiceMode("online");setGuided(false);setResultEpoch(0);setSession(value=>value+1);
+    setVoiceMode("device");setGuided(false);setResultEpoch(0);setSession(value=>value+1);
   },[begin,cancelVoice,putEntries]);
   useEffect(()=>{const previous=document.documentElement.lang;document.documentElement.lang=language;return()=>{document.documentElement.lang=previous;};},[language]);
   useEffect(()=>{

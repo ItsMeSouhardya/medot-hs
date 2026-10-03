@@ -16,7 +16,9 @@ export function recognitionAvailable(): boolean { return Boolean(constructor());
 export function startRecognition(language: Language, onText: (text: string) => void, onEnd: () => void, onError: () => void): () => void {
   const Constructor = constructor();
   if (!Constructor) { onError(); return () => {}; }
-  const recognition = new Constructor(); let active = true;
+  let recognition: RecognitionInstance;
+  try { recognition = new Constructor(); } catch { onEnd(); onError(); return () => {}; }
+  let active = true;
   const finish = () => {
     if (!active) return;
     active = false; clearTimeout(timer);

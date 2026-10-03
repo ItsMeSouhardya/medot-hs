@@ -39,6 +39,7 @@ it('public demo targets require explicit bounded configuration and active verifi
 it('voice proposes only finite timings or displayed identities and distinguishes ambiguity',()=>{
   const options=[{medicineId:'a',genericName:'Fictional sample',strength:'500 mg',dosageForm:'Tablet'},{medicineId:'b',genericName:'Fictional sample',strength:'250 mg',dosageForm:'Tablet'}];
   expect(parseFindSelection('Find my evening medicine.','en',options)).toEqual({kind:'target',target:{kind:'slot',slot:'EVENING'}});
+  expect(parseFindSelection('Which one is my evening medicine?','en',options)).toEqual({kind:'target',target:{kind:'slot',slot:'EVENING'}});
   expect(parseFindSelection('সন্ধ্যা','bn',options)).toEqual({kind:'target',target:{kind:'slot',slot:'EVENING'}});
   expect(parseFindSelection('शाम','hi',options)).toEqual({kind:'target',target:{kind:'slot',slot:'EVENING'}});
   expect(parseFindSelection('Fictional sample','en',options)).toEqual({kind:'ambiguous'});

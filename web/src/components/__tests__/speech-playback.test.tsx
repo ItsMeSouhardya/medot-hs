@@ -18,36 +18,45 @@ beforeEach(() => {
 });
 afterEach(() => { cleanup(); vi.unstubAllGlobals(); vi.restoreAllMocks(); vi.clearAllMocks(); });
 it("reads provider bytes after fresh token validation and never calls browser speech", async () => {
-  render(<ReadAloud token={token} />); expect(play).not.toHaveBeenCalled();
+  render(<ReadAloud token={token} initialVoice="online" />); expect(play).not.toHaveBeenCalled();
   fireEvent.click(screen.getByRole("button", { name: "Read medicine aloud" }));
   await waitFor(() => expect(play).toHaveBeenCalledOnce());
   expect(fetch).toHaveBeenCalledWith(`/api/public/tags/${token}/speech`, expect.objectContaining({ method: "POST", body: '{"language":"en"}' }));
   expect(speak).not.toHaveBeenCalled();
 });
+it("an online audio decoding failure switches to a fresh browser reading", async () => {
+  const instances: { onerror: (() => void) | null; play: typeof play; pause: typeof pause; src: string; onended: (() => void) | null }[] = [];
+  vi.stubGlobal("Audio", class { src = ""; onended = null; onerror = null; play = play; pause = pause; constructor() { instances.push(this); } });
+  render(<ReadAloud token={token} initialVoice="online" />);
+  fireEvent.click(screen.getByRole("button", { name: "Read medicine aloud" }));
+  await waitFor(() => expect(play).toHaveBeenCalledOnce());
+  act(() => instances[0].onerror?.());
+  await waitFor(() => expect(speak).toHaveBeenCalledOnce());
+  expect(speak.mock.calls[0][0].text).toContain(record.genericName);
+});
 it("autoplay rejection requires another explicit Play gesture, then revalidates", async () => {
   play.mockRejectedValueOnce(new Error("Autoplay"));
-  render(<ReadAloud token={token} />); fireEvent.click(screen.getByRole("button", { name: "Read medicine aloud" }));
+  render(<ReadAloud token={token} initialVoice="online" />); fireEvent.click(screen.getByRole("button", { name: "Read medicine aloud" }));
   fireEvent.click(await screen.findByRole("button", { name: "Play prepared audio" }));
   await waitFor(() => expect(play).toHaveBeenCalledTimes(2)); expect(speak).not.toHaveBeenCalled();
 });
-it("provider failure offers device voice explicitly and fresh lookup precedes fallback", async () => {
+it("provider failure automatically reads with device voice after another fresh lookup", async () => {
   vi.mocked(fetch).mockImplementation(async (_url, options) => options?.method === "POST" ? new Response('{"error":"PROVIDER"}', { status: 503 }) : active());
-  render(<ReadAloud token={token} />); fireEvent.click(screen.getByRole("button", { name: "Read medicine aloud" }));
-  const fallback = await screen.findByRole("button", { name: "Read with this device's voice" });
-  expect(speak).not.toHaveBeenCalled(); fireEvent.click(fallback);
+  render(<ReadAloud token={token} initialVoice="online" />); fireEvent.click(screen.getByRole("button", { name: "Read medicine aloud" }));
   await waitFor(() => expect(speak).toHaveBeenCalledOnce());
+  expect(fetch).toHaveBeenCalledTimes(3);
 });
 it("revocation after provider response clears identity callback and refuses playback", async () => {
   let calls = 0;
   vi.mocked(fetch).mockImplementation(async (_url, options) => options?.method === "POST" ? audio() : ++calls === 1 ? active() : new Response('{"kind":"revoked"}', { status: 410 }));
-  const onInvalid = vi.fn(); render(<ReadAloud token={token} onInvalid={onInvalid} />);
+  const onInvalid = vi.fn(); render(<ReadAloud token={token} initialVoice="online" onInvalid={onInvalid} />);
   fireEvent.click(screen.getByRole("button", { name: "Read medicine aloud" }));
   await waitFor(() => expect(onInvalid).toHaveBeenCalled()); expect(play).not.toHaveBeenCalled();
 });
 it("Stop during provider load discards late bytes and aborts the request", async () => {
   let finish!: (r: Response) => void;
   vi.mocked(fetch).mockImplementation(async (_url, options) => options?.method === "POST" ? new Promise(resolve => { finish = resolve; }) : active());
-  render(<ReadAloud token={token} />); fireEvent.click(screen.getByRole("button", { name: "Read medicine aloud" }));
+  render(<ReadAloud token={token} initialVoice="online" />); fireEvent.click(screen.getByRole("button", { name: "Read medicine aloud" }));
   await waitFor(() => expect(fetch).toHaveBeenCalledTimes(2));
   fireEvent.click(screen.getByRole("button", { name: "Stop reading" }));
   finish(audio()); await Promise.resolve(); expect(play).not.toHaveBeenCalled();
@@ -56,10 +65,10 @@ it("Stop during provider load discards late bytes and aborts the request", async
 it("rapid language switches and unmount discard late online audio", async () => {
   let finish!: (r: Response) => void;
   vi.mocked(fetch).mockImplementation(async (_url, options) => options?.method === "POST" ? new Promise(resolve => { finish = resolve; }) : active());
-  const view = render(<ReadAloud token={token} language="en" />);
+  const view = render(<ReadAloud token={token} language="en" initialVoice="online" />);
   fireEvent.click(screen.getByRole("button", { name: "Read medicine aloud" }));
   await waitFor(() => expect(fetch).toHaveBeenCalledTimes(2));
-  view.rerender(<ReadAloud token={token} language="bn" />);
+  view.rerender(<ReadAloud token={token} language="bn" initialVoice="online" />);
   await act(async () => finish(audio())); expect(play).not.toHaveBeenCalled();
   view.unmount(); expect(pause).not.toHaveBeenCalled();
 });
@@ -82,14 +91,14 @@ it("refuses an English reading when the listed device voices support only anothe
 });
 it("page hide releases prepared provider audio and prevents a later play gesture", async () => {
   play.mockRejectedValueOnce(new Error("Autoplay"));
-  render(<ReadAloud token={token} />); fireEvent.click(screen.getByRole("button", { name: "Read medicine aloud" }));
+  render(<ReadAloud token={token} initialVoice="online" />); fireEvent.click(screen.getByRole("button", { name: "Read medicine aloud" }));
   await screen.findByRole("button", { name: "Play prepared audio" });
   fireEvent(window, new Event("pagehide"));
   expect(screen.queryByRole("button", { name: "Play prepared audio" })).toBeNull();
   expect(pause).toHaveBeenCalled(); expect(URL.revokeObjectURL).toHaveBeenCalledWith("blob:software-fixture");
 });
 it("all labelled commands call their fixed handlers and Repeat interrupts playback", async () => {
-  render(<ReadAloud token={token} />);
+  render(<ReadAloud token={token} initialVoice="online" />);
   for (const [name, suffix] of [["More information", "/details"], ["Is this expired?", "/expiry"], ["Read the instructions again", "/instructions"], ["Repeat", ""]]) {
     fireEvent.click(screen.getByRole("button", { name }));
     await waitFor(() => expect(fetch).toHaveBeenCalledWith(`/api/public/tags/${token}/speech${suffix}`, expect.objectContaining({ method: "POST" })));
@@ -107,7 +116,7 @@ it("device finder feedback reads the fresh identity before the fixed verdict cue
 it("online finder feedback revalidates after identity playback before playing the fixed cue", async () => {
   const instances:{src:string;onended:(()=>void)|null;onerror:(()=>void)|null;play:ReturnType<typeof vi.fn>;pause:ReturnType<typeof vi.fn>}[]=[];
   vi.stubGlobal("Audio",class {onended=null;onerror=null;play=vi.fn(async()=>{});pause=vi.fn();constructor(public src:string){instances.push(this);}});
-  render(<ReadAloud token={token} feedback={()=>"match"}/>);
+  render(<ReadAloud token={token} initialVoice="online" feedback={()=>"match"}/>);
   fireEvent.click(screen.getByRole("button",{name:"Read medicine aloud"}));
   await waitFor(()=>expect(instances[0]?.play).toHaveBeenCalledOnce());
   await act(async()=>instances[0].onended?.());
@@ -118,7 +127,7 @@ it("online finder feedback revalidates after identity playback before playing th
 it("revocation during identity playback prevents the later verdict cue", async () => {
   const instances:{onended:(()=>void)|null;onerror:(()=>void)|null;play:ReturnType<typeof vi.fn>;pause:ReturnType<typeof vi.fn>;src:string}[]=[];
   vi.stubGlobal("Audio",class {src="";onended=null;onerror=null;play=vi.fn(async()=>{});pause=vi.fn();constructor(){instances.push(this);}});
-  const invalid=vi.fn();render(<ReadAloud token={token} feedback={()=>"match"} onInvalid={invalid}/>);
+  const invalid=vi.fn();render(<ReadAloud token={token} initialVoice="online" feedback={()=>"match"} onInvalid={invalid}/>);
   fireEvent.click(screen.getByRole("button",{name:"Read medicine aloud"}));await waitFor(()=>expect(instances[0]?.play).toHaveBeenCalledOnce());
   vi.mocked(fetch).mockResolvedValueOnce(new Response('{"kind":"revoked"}',{status:410}));
   await act(async()=>instances[0].onended?.());
