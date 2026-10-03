@@ -30,3 +30,4 @@ Desktop.ini
 # Local plans, evidence and session notes; preserve on disk, exclude from Git
 /docs/
 /CONTEXT.md
+/AGENTS.md
