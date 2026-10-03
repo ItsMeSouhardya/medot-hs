@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata,Viewport } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
 
@@ -14,6 +14,7 @@ export const metadata: Metadata = {
   description: "A tactile NFC clip connecting a medicine strip to accessible pharmacist-recorded information. A hackathon prototype with QR fallback.",
   applicationName: "MEDOT",
 };
+export const viewport:Viewport={themeColor:"#215c50",colorScheme:"light"};
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (

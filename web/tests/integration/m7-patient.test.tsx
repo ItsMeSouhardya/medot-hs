@@ -67,6 +67,18 @@ it("current page retains exact stored identity/instruction without patient sign-
   expect(html).toContain(record.genericName); expect(html).toContain(record.instruction);
   expect(html).toContain("Read medicine aloud"); expect(html).not.toContain("Sign in");
 });
+it("repeated twin rendering shows exact notes and actual pairing dates without adding access events", async () => {
+  const twin = { ...record, medicineId: "custom_fixture", recordKind: "FICTIONAL_DEMO" as const, usageSlots: ["EVENING" as const], infoEn: "Fictional label notes.", infoBn: "শুধুমাত্র ডেমো।", createdAt: "2026-10-02T10:00:00.000Z", activatedAt: "2026-10-02T10:05:00.000Z", verifiedAt: "2026-10-02T10:05:00.000Z", verificationVersion: 1 };
+  vi.mocked(resolveTag).mockResolvedValue({ kind: "active", record: twin });
+  const first = await page();
+  expect(first).toContain(twin.infoEn); expect(first).toContain(twin.infoBn);
+  expect(first).toContain('lang="bn"'); expect(first).toContain(twin.verifiedAt);
+  expect(first).toContain("Evening");
+  expect(first.indexOf("Read medicine aloud")).toBeLessThan(first.indexOf("Medicine twin"));
+  await request(); await request();
+  expect(await page()).toBe(first);
+  expect(first).not.toContain("First accessed"); expect(first).not.toContain("Dispensed");
+});
 it("a second request sees revocation rather than reusing an earlier active result", async () => {
   expect((await request()).status).toBe(200);
   vi.mocked(resolveTag).mockResolvedValue({ kind: "revoked" } as TagLookup);

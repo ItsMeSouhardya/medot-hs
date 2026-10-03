@@ -22,3 +22,6 @@ header[6] = 32; header[7] = 32; header.writeUInt16LE(1, 10);
 header.writeUInt16LE(32, 12); header.writeUInt32LE(png.length, 14); header.writeUInt32LE(22, 18);
 await writeFile(root + "src/app/favicon.ico", Buffer.concat([header, png]));
 console.log("Generated six brand SVG variants, app icon, 32px favicon and 180px apple icon.");
+const installIcon = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 180"><rect width="180" height="180" rx="36" fill="#edf4ef"/><g transform="translate(26 26) scale(2.6667)" color="#215c50">${geometry}</g></svg>`;
+for (const size of [192,512]) await sharp(Buffer.from(installIcon)).resize(size,size).png().toFile(root + `public/brand/medot-${size}.png`);
+console.log("Generated 192px and 512px MEDOT installation icons.");

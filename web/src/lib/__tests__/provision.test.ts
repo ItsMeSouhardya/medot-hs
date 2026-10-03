@@ -29,7 +29,7 @@ describe("pending provisioning", () => {
     const result = await createPendingTag(input, fake.repository, "https://medot.example");
     expect(result.token).toMatch(/^[A-Za-z0-9_-]{22}$/);
     expect(result.url).toBe("https://medot.example/m/" + result.token);
-    expect(fake.inserted).toEqual({ ...input, token: result.token, status: "PENDING" });
+    expect(fake.inserted).toEqual({ ...input, usageSlots: [], token: result.token, status: "PENDING" });
   });
 
   it("rejects an unknown catalog medicine without saving a tag", async () => {

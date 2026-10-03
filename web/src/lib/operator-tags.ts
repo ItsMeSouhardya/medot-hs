@@ -1,8 +1,8 @@
 import { getSql } from "./db";
 import { buildTagUrl, isValidToken } from "./domain";
-import type { TagStatus } from "./tag-repository";
+import { projectTagDetails, type PublicRecord, type TagDetailsRow, type TagStatus } from "./tag-repository";
 
-export type OperatorTagRow = {
+export type OperatorTagRow = TagDetailsRow & {
   token: string;
   status: TagStatus;
   generic_name: string;
@@ -16,9 +16,10 @@ export type OperatorTagRow = {
   instruction_hi?: string | null;
   created_by?: string | null;
   catalog_status?: "DEMO_READY" | "PACK_CHECK_REQUIRED";
+  readiness_reviewed_at?: string | null;
 };
 
-export type OperatorTag = {
+export type OperatorTag = Pick<PublicRecord, "medicineId" | "usageSlots" | "recordKind" | "infoEn" | "infoBn" | "infoHi" | "createdAt" | "activatedAt" | "verifiedAt" | "verificationVersion"> & {
   token: string;
   status: TagStatus;
   genericName: string;
@@ -48,7 +49,8 @@ function mapTag(row: OperatorTagRow, origin: string): OperatorTag {
     batchNumber: row.batch_number,
     expiryMonth: row.expiry_month,
     url: buildTagUrl(row.token, origin),
-    activationReady: row.catalog_status === "DEMO_READY" && Boolean(row.instruction?.trim()) && Boolean(row.instruction_bn?.trim()) &&
+    ...projectTagDetails(row),
+    activationReady: row.catalog_status === "DEMO_READY" && (row.record_kind == null || row.record_kind === "LEGACY" || Boolean(row.readiness_reviewed_at)) && Boolean(row.instruction?.trim()) && Boolean(row.instruction_bn?.trim()) &&
       (row.instruction?.trim().length ?? 0) <= 500 && (row.instruction_bn?.trim().length ?? 0) <= 500 &&
       (row.instruction_hi == null || (row.instruction_hi.trim().length > 0 && row.instruction_hi.trim().length <= 500)),
     ...(row.brand_name ? { brandName: row.brand_name } : {}),
@@ -64,7 +66,9 @@ async function queryRecentTags(): Promise<OperatorTagRow[]> {
   const rows = await sql`
     SELECT t.token, t.status, m.generic_name, m.strength, m.dosage_form,
            t.batch_number, t.expiry_month, m.brand_name,
-           t.instruction, t.instruction_bn, t.instruction_hi, t.created_by, m.catalog_status
+           t.instruction, t.instruction_bn, t.instruction_hi, t.created_by, m.catalog_status,
+           t.medicine_id, t.usage_slots, m.record_kind, m.info_en, m.info_bn, m.info_hi, m.readiness_reviewed_at,
+           t.created_at, t.activated_at, t.verified_at, t.verification_version
     FROM tags AS t
     JOIN medicines AS m ON m.id = t.medicine_id
     ORDER BY t.created_at DESC
@@ -78,7 +82,9 @@ async function queryOneTag(token: string): Promise<OperatorTagRow | null> {
   const rows = await sql`
     SELECT t.token, t.status, m.generic_name, m.strength, m.dosage_form,
            t.batch_number, t.expiry_month, m.brand_name,
-           t.instruction, t.instruction_bn, t.instruction_hi, t.created_by, m.catalog_status
+           t.instruction, t.instruction_bn, t.instruction_hi, t.created_by, m.catalog_status,
+           t.medicine_id, t.usage_slots, m.record_kind, m.info_en, m.info_bn, m.info_hi, m.readiness_reviewed_at,
+           t.created_at, t.activated_at, t.verified_at, t.verification_version
     FROM tags AS t
     JOIN medicines AS m ON m.id = t.medicine_id
     WHERE t.token = ${token}

@@ -1,9 +1,10 @@
 import type { PublicRecord } from "./tag-repository";
+import { locales, type Language } from "./i18n";
 
-export function formatExpiryMonth(value: string): string {
+export function formatExpiryMonth(value: string, language: Language = "en"): string {
   const [year, month] = value.split("-").map(Number);
   const date = new Date(Date.UTC(year, month - 1, 1));
-  return new Intl.DateTimeFormat("en-IN", {
+  return new Intl.DateTimeFormat(locales[language], {
     month: "long",
     year: "numeric",
     timeZone: "UTC",

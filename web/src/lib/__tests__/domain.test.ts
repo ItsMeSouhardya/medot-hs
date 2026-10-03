@@ -6,6 +6,14 @@ import {
   provisionInputSchema,
 } from "../domain";
 
+it("persists only explicit, distinct reviewed usage slots and leaves missing timing unclassified", () => {
+  const raw = { medicineId: "metformin-500", batchNumber: "DEMO-A1", expiryMonth: "2028-12", instruction: "Software fixture only.", instructionBn: "শুধুমাত্র ডেমো।" };
+  expect(provisionInputSchema.parse(raw).usageSlots).toEqual([]);
+  expect(provisionInputSchema.parse({ ...raw, usageSlots: ["MORNING", "EVENING"] }).usageSlots).toEqual(["MORNING", "EVENING"]);
+  expect(provisionInputSchema.safeParse({ ...raw, usageSlots: ["EVENING", "EVENING"] }).success).toBe(false);
+  expect(provisionInputSchema.safeParse({ ...raw, usageSlots: ["DINNER"] }).success).toBe(false);
+});
+
 describe("MEDOT identity", () => {
   it("creates a nonsequential 22-character URL-safe token", () => {
     const first = generateToken();

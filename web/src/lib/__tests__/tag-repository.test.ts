@@ -13,6 +13,12 @@ const row: TagRow = {
   instruction: "Sample instruction",
 };
 
+it("projects exact strip slots, immutable notes and actual provenance while excluding reviewer IDs", async () => {
+  const result = await resolveTag(token, async () => ({ ...row, medicine_id: "custom_fixture", record_kind: "FICTIONAL_DEMO", usage_slots: ["EVENING"], info_en: "Fictional label.", info_bn: "শুধুমাত্র ডেমো।", created_at: "2026-10-02T10:00:00.000Z", activated_at: "2026-10-02T10:05:00.000Z", verified_at: "2026-10-02T10:05:00.000Z", verification_version: 1, readiness_reviewed_by: "private-reviewer" }));
+  expect(result).toMatchObject({ kind: "active", record: { medicineId: "custom_fixture", recordKind: "FICTIONAL_DEMO", usageSlots: ["EVENING"], infoEn: "Fictional label.", infoBn: "শুধুমাত্র ডেমো।", createdAt: "2026-10-02T10:00:00.000Z", verifiedAt: "2026-10-02T10:05:00.000Z", verificationVersion: 1 } });
+  expect(JSON.stringify(result)).not.toContain("private-reviewer");
+});
+
 describe("public tag resolution", () => {
   it("does not query for a malformed token", async () => {
     const query = vi.fn(async () => row);
@@ -39,6 +45,8 @@ describe("public tag resolution", () => {
         batchNumber: "DEMO-A1",
         expiryMonth: "2028-02",
         instruction: "Sample instruction",
+        usageSlots: [],
+        recordKind: "LEGACY",
       },
     });
   });

@@ -1,5 +1,6 @@
 # Local dependencies, generated files and execution scratch
 node_modules/
+.npm-cache/
 .next/
 out/
 build/
@@ -25,3 +26,7 @@ Desktop.ini
 
 # Preserve the existing nested clone without committing it as a submodule
 /medot-hs/
+
+# Local plans, evidence and session notes; preserve on disk, exclude from Git
+/docs/
+/CONTEXT.md

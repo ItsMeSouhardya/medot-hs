@@ -3,9 +3,11 @@ import {
   generateToken,
   provisionInputSchema,
   type ProvisionInput,
+  type UsageSlot,
 } from "./domain";
 
-export type PendingTag = ProvisionInput & {
+export type PendingTag = Omit<ProvisionInput, "usageSlots"> & {
+  usageSlots?: UsageSlot[];
   token: string;
   status: "PENDING";
   createdBy?: string;

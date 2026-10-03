@@ -1,6 +1,12 @@
 import { expect, it } from "vitest";
 import { findOperatorTag, listOperatorTags, parseTagReference } from "../operator-tags";
 
+it("recovers exact usage slots, notes and provenance for independent pending review", async () => {
+  const result = await findOperatorTag("abcdefghijklmnopqrstuv", "https://medot.example", async () => ({ token: "abcdefghijklmnopqrstuv", status: "PENDING", generic_name: "Demo label", strength: "500 mg", dosage_form: "Tablet", batch_number: "DEMO", expiry_month: "2028-12", usage_slots: ["EVENING"], record_kind: "FICTIONAL_DEMO", info_en: "Demo only.", info_bn: "শুধুমাত্র ডেমো।", created_at: "2026-10-02T10:00:00.000Z" }));
+  expect(result).toMatchObject({ usageSlots: ["EVENING"], recordKind: "FICTIONAL_DEMO", infoEn: "Demo only.", infoBn: "শুধুমাত্র ডেমো।", createdAt: "2026-10-02T10:00:00.000Z" });
+  expect(result?.verifiedAt).toBeUndefined();
+});
+
 it("recovers pending and active tag URLs from stored records", async () => {
   const rows = [
     {
