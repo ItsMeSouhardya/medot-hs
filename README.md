@@ -14,7 +14,7 @@ A tactile NFC clip connects a medicine strip to an accessible, spoken digital re
 
 | Area | Implemented behavior |
 | --- | --- |
-| Pharmacy | Authorized sign-in, searchable catalog, custom medicine entry and review, NFC writing and matching QR, readback, activation and revocation |
+| Pharmacy | Authorized sign-in, searchable catalog, eight ready fictional pack alternatives with multilingual identification presets, custom entry/review, pack replacement drafts, NFC/QR readback, activation and revocation |
 | Medicine twin | Identity, printed batch/expiry, reviewed instructions, pairing verification and lifecycle timeline |
 | Accessible reader | English/Bengali/Hindi controls, warning before identity, automatic verified reading followed by voice-command listening, large controls, transcript, browser speech and online-voice fallback, Repeat/Stop |
 | Find my medicine | Confirm an exact medicine or recorded timing, scan candidates and receive match/mismatch feedback |
@@ -24,6 +24,8 @@ A tactile NFC clip connects a medicine strip to an accessible, spoken digital re
 | Visual theme | Shared light mint/forest colors, bundled Manrope and Bengali/Hindi Noto fonts, responsive patient and pharmacy pages |
 
 MEDOT identifies a linked record. Pairing verification does not establish medicine authenticity. Identification check-ins do not establish dose taking. Opening, reading or scanning creates no caregiver event. Store only demo medicine information; no patient identifiers, invented doses or treatment recommendations.
+
+For the sample workflow, open **Pharmacy → Provision**, choose a preset beginning **FICTIONAL-**, and review its English/Bengali/Hindi text and sample timing. It selects a separate fictional catalog identity and fills identification cues without doses. Enter the batch and expiry printed on your fictional sample label; these are never prefilled. **Review all instruction texts** shows every template and the original blocked drafts. The eight real-pack candidates remain blocked until checked against the actual pack; **Prepare a checked replacement for a blocked pack** starts a new entry with unknown fields blank. Existing medicine identities and tag URLs are preserved. The seed provides 25 catalog labels alongside any custom entries; fixture readiness records a system fixture check, not human pack or prescription review.
 
 ## Setup
 
@@ -130,7 +132,7 @@ Sharing access enforces expiry immediately; the daily job deletes retained expir
 
 ## Release status
 
-All five feature phases plus UI/reminders are implemented and deployed at https://medot-hs.onrender.com/. The automatic speech follow-up passed 388 default tests, lint/types/build. The 27 opt-in Neon cases passed separately in the earlier release; the speech follow-up changes no database schema. Both free scheduler jobs have recorded HTTP 200 executions. This demonstrates scheduler execution, not delivery to a consenting phone.
+All five feature phases plus UI/reminders are implemented and deployed at https://medot-hs.onrender.com/. The fictional sample follow-up passed 393 default tests, lint/types/build and eight separately enabled Neon catalog/provisioning cases. The default suite skips 28 opt-in cases; the other 20 retain earlier release evidence. Two additive seed runs preserved all 20 existing medicine records, tags and audio while adding eight separate fictional samples. Both free scheduler jobs have recorded HTTP 200 executions. This demonstrates scheduler execution, not delivery to a consenting phone.
 
 - ElevenLabs voice/model lookups succeed, but synthesis returned **402 payment_required** on 03 October 2026. Read aloud uses the browser's normal speech API by default. Selecting online voice still tries ElevenLabs and automatically falls back to a freshly verified browser reading on provider/network failure. Fix account entitlement before claiming online speech/cue assets ready.
 - Opening a medicine page attempts one automatic reading after fresh active-record validation. Each completed reading automatically starts one command-listening window of at most ten seconds. **Stop** cancels audio, pending listening and the microphone; returning to the page refreshes the record without replaying it. Existing **Read medicine aloud**, **Listen for a command** and fixed-command buttons remain available. English accepts phrases such as “Read aloud”, “Tell me more” and “Read instructions please”. Browser autoplay/microphone permission rules still apply: a fresh phone tab may require tapping Read medicine aloud once and allowing the microphone. Recognition may use an external service; MEDOT stores no recordings. Android locale labels with underscores are normalized, and English can use OS voice resolution even when its enumerated list is incomplete. Missing Bengali/Hindi device voices still offer stored English explicitly; MEDOT does not translate instructions. New automatic-mode interface guidance is localized, with phone pronunciation still unverified.

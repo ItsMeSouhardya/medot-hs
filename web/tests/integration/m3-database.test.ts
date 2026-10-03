@@ -6,6 +6,7 @@ import { createPendingTag } from "@/lib/provision";
 import { lifecycleRepository, provisionRepository, resolveTag } from "@/lib/tag-repository";
 import { findOperatorTag, getOperatorCounts } from "@/lib/operator-tags";
 import { medicineCatalog } from "@/lib/medicine-catalog";
+import { fictionalDemoPrescriptions } from "@/data/demo-prescriptions";
 
 // Opt in against the authorized demo database only. Never run on each test/build.
 describe.skipIf(process.env.MEDOT_RUN_DB_TESTS !== "1")("M3 real Neon persistence", () => {
@@ -21,7 +22,7 @@ describe.skipIf(process.env.MEDOT_RUN_DB_TESTS !== "1")("M3 real Neon persistenc
     created.clear();
   });
 
-  it("preserves all 17 seed identities alongside custom labels and rejects eight unverified packs", async () => {
+  it("preserves all seed identities alongside custom labels and rejects eight unverified packs", async () => {
     for (const medicine of medicineCatalog) {
       expect(await provisionRepository.medicineExists(medicine.id)).toBe(medicine.catalogStatus === "DEMO_READY");
     }
@@ -43,6 +44,20 @@ describe.skipIf(process.env.MEDOT_RUN_DB_TESTS !== "1")("M3 real Neon persistenc
     const sql = getSql();
     const [row] = await sql`SELECT instruction_bn, instruction_hi, created_by FROM tags WHERE token = ${token}`;
     expect(row).toEqual({ instruction_bn: input.instructionBn, instruction_hi: input.instructionHi, created_by: "m3-integration-only" });
+  }, 30000);
+
+  it("provisions every fictional sample with exact identification cues without activating a tag", async () => {
+    for (const item of fictionalDemoPrescriptions.flatMap(group => group.items)) {
+      const token = generateToken(); created.add(token);
+      await provisionRepository.insertPending({ ...input, token, status: "PENDING", medicineId: item.medicineId,
+        instruction: item.instruction, instructionBn: item.instructionBn, instructionHi: item.instructionHi,
+        usageSlots: item.usageSlots ?? [], createdBy: "fictional-fixture-integration-only" });
+      expect(await resolveTag(token)).toEqual({ kind: "pending" });
+      expect(await findOperatorTag(token, "https://medot.example")).toMatchObject({
+        status: "PENDING", activationReady: true, instruction: item.instruction,
+        instructionBn: item.instructionBn, instructionHi: item.instructionHi, usageSlots: item.usageSlots,
+      });
+    }
   }, 30000);
 
   it("rechecks pack readiness atomically at insertion and refuses blocked IDs", async () => {

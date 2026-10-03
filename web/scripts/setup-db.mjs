@@ -84,9 +84,13 @@ await sql.transaction([
   ...sharingSchemaStatements(sql),
   ...reminderSchemaStatements(sql),
   ...medicines.map(item => sql`
-    INSERT INTO medicines (id, generic_name, strength, dosage_form, brand_name, catalog_status)
+    INSERT INTO medicines (id, generic_name, strength, dosage_form, brand_name, catalog_status,
+      record_kind, info_en, info_bn, info_hi, readiness_reviewed_at, readiness_reviewed_by)
     VALUES (${item.id}, ${item.genericName}, ${item.strength}, ${item.dosageForm},
-      ${item.brandName ?? null}, ${item.catalogStatus})
+      ${item.brandName ?? null}, ${item.catalogStatus}, ${item.recordKind ?? "LEGACY"},
+      ${item.infoEn ?? null}, ${item.infoBn ?? null}, ${item.infoHi ?? null},
+      CASE WHEN ${item.recordKind === "FICTIONAL_DEMO" && item.catalogStatus === "DEMO_READY"} THEN now() ELSE NULL END,
+      ${item.recordKind === "FICTIONAL_DEMO" && item.catalogStatus === "DEMO_READY" ? "seed:non-clinical-fictional-fixture-v1" : null})
     ON CONFLICT (id) DO NOTHING
   `),
 ]);

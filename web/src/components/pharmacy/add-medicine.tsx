@@ -10,8 +10,12 @@ function identity(draft: Draft | Medicine) {
     ...(draft.infoEn?.trim() ? { infoEn: draft.infoEn.trim() } : {}), ...(draft.infoBn?.trim() ? { infoBn: draft.infoBn.trim() } : {}),
     ...(draft.infoHi?.trim() ? { infoHi: draft.infoHi.trim() } : {}) };
 }
-export default function AddMedicine({ initialMedicine, onSaved, onUse, onBusyChange }: { initialMedicine?: Medicine; onSaved: (medicine: Medicine) => void; onUse: (id: string) => void; onBusyChange?: (busy: boolean) => void }) {
-  const [draft, setDraft] = useState(empty);
+export default function AddMedicine({ initialMedicine, sourceMedicine, onSaved, onUse, onBusyChange }: { initialMedicine?: Medicine; sourceMedicine?: Medicine; onSaved: (medicine: Medicine) => void; onUse: (id: string) => void; onBusyChange?: (busy: boolean) => void }) {
+  const [draft, setDraft] = useState<Draft>(() => sourceMedicine ? {
+    ...empty, genericName: /requires pack check/i.test(sourceMedicine.genericName) ? "" : sourceMedicine.genericName,
+    strength: /requires? pack check/i.test(sourceMedicine.strength) ? "" : sourceMedicine.strength,
+    dosageForm: sourceMedicine.dosageForm, brandName: sourceMedicine.brandName ?? "", recordKind: "PHYSICAL_PACK",
+  } : empty);
   const [saved, setSaved] = useState<Medicine | null>(initialMedicine ?? null);
   const [busy, setBusy] = useState(false);
   const [submitted, setSubmitted] = useState(false);
@@ -69,6 +73,7 @@ export default function AddMedicine({ initialMedicine, onSaved, onUse, onBusyCha
   return <section className="operator-card custom-medicine" aria-labelledby="custom-medicine-heading">
     <h2 id="custom-medicine-heading" tabIndex={-1} ref={heading}>{saved ? "Review saved medicine" : "Add medicine data"}</h2>
     <p>Store a demo label of your choice. Saving keeps it blocked until its exact label and language information are reviewed.</p>
+    {sourceMedicine && <p role="note">Preparing a new entry from {sourceMedicine.brandName ?? sourceMedicine.genericName}. Enter missing fields from the pack in hand. The original entry and its tags stay unchanged.</p>}
     {saved ? <>
       <dl className="review-details"><div><dt>Medicine</dt><dd>{saved.brandName && `${saved.brandName} - `}{saved.genericName} {saved.strength} · {saved.dosageForm}</dd></div><div><dt>Label source</dt><dd>{saved.recordKind === "FICTIONAL_DEMO" ? "Fictional demo label" : "Physical pack label"}</dd></div><div><dt>Catalog ID ending</dt><dd>{saved.id.slice(-6)}</dd></div></dl>
       {saved.infoEn && <div className="instruction-review"><h3>Saved medicine information</h3><p lang="en">{saved.infoEn}</p><p lang="bn">{saved.infoBn}</p>{saved.infoHi && <p lang="hi">{saved.infoHi}</p>}</div>}
